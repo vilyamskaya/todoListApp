@@ -1,7 +1,13 @@
 {
   "name": "todo-list-app",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "author": "Vilyamskaya",
+  "main": "src/main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vilyamskaya/todoListApp.git"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
