@@ -37,7 +37,7 @@ export default {
   methods: {
     addNewItem: function () {
       if (this.todoText.length > 0) {
-        this.$emit('on-add-todo', this.todoText)
+        this.$store.commit('addItem', this.todoText) // убрать и вызвать saveItem
       }
       this.todoText = ''
     }

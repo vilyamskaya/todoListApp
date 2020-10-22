@@ -3,7 +3,7 @@
     <button
       class="btn"
       type="button"
-      @click="$emit('on-delete')"
+      @click="deleteItem(index, $event)"
     ><span class="fa fa-trash-o"></span>
     </button>
     <button
@@ -15,7 +15,7 @@
     <button
       class="btn-complete"
       type="button"
-      @click="$emit('on-complete')"
+      @click="$emit('on-complete', $event)"
     ><span
       :class="{visible: completed}"
       class="fa fa-check"
@@ -66,7 +66,8 @@ export default {
   },
   props: {
     completed: Boolean,
-    text: String
+    text: String,
+    index: Number
   },
   directives: {
     focus: {
@@ -77,7 +78,6 @@ export default {
   },
   methods: {
     startEditing: function () {
-      if (this.isEditing) this.finishEditing()
       this.isEditing = true
       this.newText = this.text
     },
@@ -87,7 +87,14 @@ export default {
     },
     cancelEditing: function () {
       this.isEditing = false
+    },
+    deleteItem: function (index, item) {
+      this.$store.commit('deleteItem', {
+        index,
+        item
+      })
     }
+
   }
 }
 </script>
