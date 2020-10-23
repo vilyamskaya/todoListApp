@@ -3,7 +3,7 @@
     <button
       class="btn"
       type="button"
-      @click="$emit('on-delete')"
+      @click="deleteItem(index, $event)"
     ><span class="fa fa-trash-o"></span>
     </button>
     <button
@@ -15,7 +15,7 @@
     <button
       class="btn-complete"
       type="button"
-      @click="$emit('on-complete')"
+      @click="$emit('on-complete', $event)"
     ><span
       :class="{visible: completed}"
       class="fa fa-check"
@@ -66,7 +66,8 @@ export default {
   },
   props: {
     completed: Boolean,
-    text: String
+    text: String,
+    index: Number
   },
   directives: {
     focus: {
@@ -77,7 +78,6 @@ export default {
   },
   methods: {
     startEditing: function () {
-      if (this.isEditing) this.finishEditing()
       this.isEditing = true
       this.newText = this.text
     },
@@ -87,7 +87,14 @@ export default {
     },
     cancelEditing: function () {
       this.isEditing = false
+    },
+    deleteItem: function (index, item) {
+      this.$store.commit('deleteItem', {
+        index,
+        item
+      })
     }
+
   }
 }
 </script>
@@ -109,12 +116,7 @@ export default {
     color: #2E2E34;
   }
 
-  .btn-complete:hover {
-    border-color: #2E2E34;
-  }
-
   .btn-complete:focus {
-    border-color: #2E2E34;
     outline: none;
   }
 
@@ -122,6 +124,8 @@ export default {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
     list-style: none;
     margin-bottom: 2rem;
@@ -161,20 +165,31 @@ export default {
   }
 
   .editing-form input {
-    width: 100%;
+    width: 99%;
     display: block;
     height: 6rem;
     font-size: 2.5rem;
     font-family: 'Montserrat', sans-serif;
     border: 0.5rem solid #2E2E34;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
     padding: 0 2rem;
     transition: all 0.5s;
     margin: 0.5rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
   }
 
   .editing-form input:focus {
     border-color: #F49737;
     outline: none;
+  }
+
+  @media (min-width: 768px) {
+    .btn-complete:hover {
+      border-color: #2E2E34;
+    }
   }
 </style>

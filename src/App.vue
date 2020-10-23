@@ -26,7 +26,7 @@ export default {
   h1 {
     font-family: 'Amatic SC', cursive;
     line-height: 1;
-    font-size: 12rem;
+    font-size: 10rem;
     margin: 2rem;
     text-align: center;
   }
