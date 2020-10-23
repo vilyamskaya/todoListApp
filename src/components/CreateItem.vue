@@ -37,7 +37,7 @@ export default {
   methods: {
     addNewItem: function () {
       if (this.todoText.length > 0) {
-        this.$store.commit('addItem', this.todoText) // убрать и вызвать saveItem
+        this.$store.commit('addItem', this.todoText)
       }
       this.todoText = ''
     }
@@ -70,16 +70,21 @@ export default {
   }
 
   .create-form input {
-    width: 100%;
+    width: 98%;
     display: block;
     height: 6rem;
     font-size: 2.5rem;
     font-family: 'Montserrat', sans-serif;
     border: 0.5rem solid #F8DFC7;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
     padding: 0 2rem;
     transition: all 0.5s;
     margin: 0.5rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
   }
 
   .create-form input:focus {

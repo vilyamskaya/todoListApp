@@ -2,15 +2,14 @@
   <div class="filter">
     <h2>{{ listName + ' задачи'}}</h2>
     <div class="filter-btns">
-      <div class='m-filter'>
+      <div class='m-filter' @mouseleave="hidden = true">
         <button
           type="button"
           class="btn btn-filter"
-          @click="isMobile = !isMobile"
-          @blur="isMobile = !isMobile"
+          @click="hidden = !hidden"
         >Фильтры
         </button>
-        <div class="content">
+        <div class="content" :class="{ hidden }">
           <a
             href="#"
             class="m-btn"
@@ -66,7 +65,7 @@ import { mapMutations, mapState } from 'vuex'
 export default {
   data () {
     return {
-      isMobile: false
+      hidden: true
     }
   },
   computed: mapState([
@@ -120,13 +119,10 @@ export default {
     background-color: #2E2E34;
   }
 
-  .btn:hover {
-    border-color: #2E2E34;
-    background-color: #2E2E34;
-  }
-
   .btn:active {
     color: transparent;
+    background-color: #2E2E34;
+    border-color: #2E2E34;
   }
 
   .btn:focus {
@@ -143,7 +139,7 @@ export default {
   }
 
   .m-filter .content {
-    display: none;
+    display: block;
     background-color: #2E2E34;
     list-style: none;
     margin: 0;
@@ -157,14 +153,14 @@ export default {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   }
 
-  .m-filter:hover .content {
-    display: block;
+  .m-filter .content.hidden {
+    display: none;
   }
 
-  .m-filter:hover .btn-filter {
-    background-color: #2E2E34;
-    color: #FFF8F2;
-  }
+  /*.m-filter:hover .btn-filter {*/
+  /*  background-color: #2E2E34;*/
+  /*  color: #FFF8F2;*/
+  /*}*/
 
   .m-btn {
     display: block;
@@ -178,13 +174,20 @@ export default {
     transition: all 0.5s;
   }
 
-  .m-btn:hover {
-    border-bottom: 1px solid #F49737;
-    color: #F49737;
-  }
+  /*.m-btn:hover {*/
+  /*  border-bottom: 1px solid #F49737;*/
+  /*  color: #F49737;*/
+  /*}*/
 
   .m-btn:active {
-    color: #2E2E34;
-    border-bottom: 1px solid #2E2E34;
+    color: #F49737;
+    border-bottom: 1px solid #F49737;
+  }
+
+  @media (min-width: 768px) {
+    .btn:hover {
+      border-color: #2E2E34;
+      background-color: #2E2E34;
+    }
   }
 </style>

@@ -32,7 +32,8 @@ import { mapState } from 'vuex'
 
 export default {
   mounted () {
-    this.$store.dispatch('getAllTodos')
+    this.$store.commit('setAllTodos')
+    this.$store.commit('setId')
   },
   computed: mapState([
     'todoList',

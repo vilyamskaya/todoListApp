@@ -1,22 +1,33 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { localStorageService } from './localStorageService'
 
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
     todoList: [],
-    id: 0,
+    id: null,
     listName: 'Все'
   },
   mutations: {
     addItem (state, text) {
-      state.todoList.push({
+      const todo = {
         completed: false,
         shown: true,
         text: text,
         id: state.id++
-      })
+      }
+      state.todoList.push(todo)
+      localStorageService.updateLocalStorage(state.todoList)
+    },
+    editItem (state, { item, newText }) {
+      item.text = newText
+      localStorageService.updateLocalStorage(state.todoList)
+    },
+    deleteItem (state, { index }) {
+      state.todoList.splice(index, 1)
+      localStorageService.updateLocalStorage(state.todoList)
     },
     showActive (state) {
       state.listName = 'Активные'
@@ -39,21 +50,20 @@ export const store = new Vuex.Store({
     deleteAll (state) {
       state.todoList = []
       state.id = 0
-      localStorage.clear()
+      localStorageService.clearAll()
     },
-    deleteItem (state, { index, item }) {
-      state.todoList.splice(index, 1)
-      localStorage.removeItem(item.id)
+    setAllTodos (state) {
+      state.todoList = localStorageService.getTodoList()
     },
-    editItem (state, { item, newText }) {
-      item.text = newText
-      localStorage.setItem(item.id, item)
+    setId (state) {
+      const item = state.todoList[state.todoList.length - 1]
+      state.id = (item) ? item.id + 1 : 0
     }
   },
   actions: {
     completeItem ({ commit, state }, item) {
       item.completed = !item.completed
-      localStorage.setItem(item.id, item)
+      localStorageService.updateLocalStorage(state.todoList)
       switch (state.listName) {
         case 'Активные':
           commit('showActive')
@@ -64,17 +74,6 @@ export const store = new Vuex.Store({
         default:
           commit('showAll')
       }
-    },
-    saveItem (item) {
-      localStorage.setItem(item.id, item)
-      // сделать мутацию addTodo
-    },
-    getAllTodos ({ state }) {
-      for (const key of Object.keys(localStorage)) {
-        state.todoList.push(localStorage.getItem(key))
-      }
-      // сделать связку localStorage и todoList
-      // поменять ошибки в стилях
     }
   }
 })
