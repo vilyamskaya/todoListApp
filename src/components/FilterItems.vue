@@ -5,6 +5,7 @@
       <div class='m-filter' @mouseleave="hidden = true">
         <button
           type="button"
+          name="filters"
           class="btn btn-filter"
           @click="hidden = !hidden"
         >Фильтры
@@ -33,18 +34,21 @@
       <div class="visible-lg">
         <button
           type="button"
+          name="active"
           class="btn"
           :class="{ selected: listName === 'Активные' }"
           @click="showActive">Активные
         </button>
         <button
           type="button"
+          name="done"
           class="btn"
           :class="{ selected: listName === 'Выполненные' }"
           @click="showDone">Выполненные
         </button>
         <button
           type="button"
+          name="all"
           class="btn"
           :class="{ selected: listName === 'Все' }"
           @click="showAll">Все
@@ -52,6 +56,7 @@
       </div>
       <button
         type="button"
+        name="delete-all"
         class="btn delete-all"
         @click="deleteAll">Очистить список
       </button>
@@ -132,10 +137,12 @@ export default {
   .m-filter {
     display: none;
     position: relative;
+    margin: 0.5rem;
   }
 
   .btn-filter {
     border: none;
+    margin: 0;
   }
 
   .m-filter .content {

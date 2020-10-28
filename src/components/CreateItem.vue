@@ -5,11 +5,13 @@
       <button
         class="btn"
         type="button"
+        name="add"
         @click="addNewItem"
       ><span class="fa fa-check"></span>
       </button>
       <div class="wide">
         <input
+          aria-label="Write a to-do"
           type="text"
           v-model="todoText"
           @keyup.enter.prevent="addNewItem"
@@ -76,6 +78,7 @@ export default {
     font-size: 2.5rem;
     font-family: 'Montserrat', sans-serif;
     border: 0.5rem solid #F8DFC7;
+    border-radius: 0;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;

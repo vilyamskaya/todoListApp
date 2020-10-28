@@ -3,18 +3,21 @@
     <button
       class="btn"
       type="button"
+      name="delete"
       @click="deleteItem(index, $event)"
     ><span class="fa fa-trash-o"></span>
     </button>
     <button
       class="btn"
       type="button"
+      name="edit"
       @click="startEditing"
     ><span class="fa fa-pencil"></span>
     </button>
     <button
       class="btn-complete"
       type="button"
+      name="check-complete"
       @click="$emit('on-complete', $event)"
     ><span
       :class="{visible: completed}"
@@ -26,6 +29,7 @@
       class="item-btn"
       :class="{ completed }"
       type="button"
+      name="item"
       @dblclick="startEditing"
     >{{ text }}
     </button>
@@ -34,18 +38,21 @@
         <button
           class="btn"
           type="button"
+          name="finish-editing"
           @click="finishEditing"
         ><span class="fa fa-check"></span>
         </button>
         <button
           class="btn"
           type="button"
+          name="cancel-editing"
           @click="cancelEditing"
         ><span class="fa fa-times"></span>
         </button>
       </div>
       <div class="wide">
         <input
+          aria-label="Edit to-do"
           type="text"
           v-model="newText"
           @keyup.enter.prevent="finishEditing"
@@ -105,7 +112,6 @@ export default {
     background: #fff;
     height: 6rem;
     width: 6rem;
-    text-align: center;
     font-size: 2.5rem;
     color: transparent;
     transition: all 0.5s;
@@ -171,6 +177,7 @@ export default {
     font-size: 2.5rem;
     font-family: 'Montserrat', sans-serif;
     border: 0.5rem solid #2E2E34;
+    border-radius: 0;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;

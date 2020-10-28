@@ -18,6 +18,7 @@ export default {
   @font-face {
     font-family: "Amatic SC";
     src: url("assets/AmaticSC-Bold.ttf");
+    font-display: swap;
   }
 
   #app {

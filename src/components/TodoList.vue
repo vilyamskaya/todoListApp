@@ -67,6 +67,7 @@ export default {
   @font-face {
     font-family: "Montserrat";
     src: url("../assets/Montserrat-Light.ttf");
+    font-display: swap;
   }
 
   h2 {
@@ -81,7 +82,7 @@ export default {
   .todos {
     display: flex;
     flex-direction: column;
-    width: 70%;
+    width: 55%;
   }
 
   .todos ul {
