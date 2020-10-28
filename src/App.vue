@@ -15,7 +15,10 @@ export default {
 </script>
 
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap");
+  @font-face {
+    font-family: "Amatic SC";
+    src: url("assets/AmaticSC-Bold.ttf");
+  }
 
   #app {
     display: flex;
@@ -27,6 +30,7 @@ export default {
     font-family: 'Amatic SC', cursive;
     line-height: 1;
     font-size: 10rem;
+    font-weight: normal;
     margin: 2rem;
     text-align: center;
   }

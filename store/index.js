@@ -10,6 +10,18 @@ export const store = new Vuex.Store({
     id: null,
     listName: 'Все'
   },
+  getters: {
+    filteredTodos: state => {
+      switch (state.listName) {
+        case 'Активные':
+          return state.todoList.filter(item => item.completed === false)
+        case 'Выполненные':
+          return state.todoList.filter(item => item.completed === true)
+        default:
+          return state.todoList
+      }
+    }
+  },
   mutations: {
     addItem (state, text) {
       const todo = {
@@ -31,21 +43,12 @@ export const store = new Vuex.Store({
     },
     showActive (state) {
       state.listName = 'Активные'
-      state.todoList.forEach(function (item) {
-        item.shown = !item.completed
-      })
     },
     showDone (state) {
       state.listName = 'Выполненные'
-      state.todoList.forEach(function (item) {
-        item.shown = item.completed
-      })
     },
     showAll (state) {
       state.listName = 'Все'
-      state.todoList.forEach(function (item) {
-        item.shown = true
-      })
     },
     deleteAll (state) {
       state.todoList = []

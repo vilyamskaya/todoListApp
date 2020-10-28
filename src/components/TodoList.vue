@@ -7,13 +7,12 @@
         <transition-group name="list" tag="ul" appear>
           <li
             is="todo-item"
-            v-for="item in todoList"
+            v-for="item in filteredTodoList"
             :index = todoList.indexOf(item)
             :key="item.id"
             :completed="item.completed"
             :text="item.text"
             :isEditing="item.isEditing"
-            v-show="item.shown"
             @on-complete = "completeItem(item)"
             @on-edit = "editItem(item, $event)"
           ></li>
@@ -35,10 +34,15 @@ export default {
     this.$store.commit('setAllTodos')
     this.$store.commit('setId')
   },
-  computed: mapState([
-    'todoList',
-    'id'
-  ]),
+  computed: {
+    filteredTodoList () {
+      return this.$store.getters.filteredTodos
+    },
+    ...mapState([
+      'id',
+      'todoList'
+    ])
+  },
   components: {
     'create-item': CreateItem,
     'todo-item': TodoItem,
@@ -59,13 +63,17 @@ export default {
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
   @import url("https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+  @font-face {
+    font-family: "Montserrat";
+    src: url("../assets/Montserrat-Light.ttf");
+  }
 
   h2 {
     font-family: 'Amatic SC', cursive;
     line-height: 1;
     margin: 2rem;
+    font-weight: normal;
     text-align: center;
     font-size: 6rem;
   }
