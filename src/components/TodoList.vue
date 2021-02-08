@@ -1,21 +1,22 @@
 <template>
   <div class="todos">
-    <create-item/>
+    <h1>Твой список задач</h1>
+    <create-item />
     <transition name="slide-fade" appear>
       <div v-if="todoList.length">
-        <filter-items/>
+        <filter-items />
         <transition-group name="list" tag="ul" appear>
           <li
             is="todo-item"
-            v-for="item in filteredTodoList"
-            :index = todoList.indexOf(item)
+            v-for="item in filteredTodos"
+            :index="todoList.indexOf(item)"
             :key="item.id"
             :completed="item.completed"
             :text="item.text"
             :isEditing="item.isEditing"
-            @on-complete = "completeItem(item)"
-            @on-edit = "editItem(item, $event)"
-          ></li>
+            @on-complete="completeItem(item)"
+            @on-edit="editItem({ item, text: $event })"
+          />
         </transition-group>
       </div>
       <p class="empty" v-else>Список задач пуст</p>
@@ -24,51 +25,32 @@
 </template>
 
 <script>
-import CreateItem from './CreateItem.vue'
-import TodoItem from './TodoItem.vue'
-import FilterItems from './FilterItems'
-import { mapState } from 'vuex'
+  import CreateItem from './CreateItem.vue'
+  import TodoItem from './TodoItem.vue'
+  import FilterItems from './FilterItems'
+  import { mapGetters, mapActions } from 'vuex'
 
-export default {
-  mounted () {
-    this.$store.commit('setAllTodos')
-    this.$store.commit('setId')
-  },
-  computed: {
-    filteredTodoList () {
-      return this.$store.getters.filteredTodos
+  export default {
+    mounted() {
+      this.setAllTodos()
+      this.setId()
     },
-    ...mapState([
-      'id',
-      'todoList'
-    ])
-  },
-  components: {
-    'create-item': CreateItem,
-    'todo-item': TodoItem,
-    'filter-items': FilterItems
-  },
-  methods: {
-    completeItem: function (item) {
-      this.$store.dispatch('completeItem', item)
+    computed: {
+      ...mapGetters(['id', 'todoList', 'filteredTodos']),
     },
-    editItem (item, newText) {
-      this.$store.commit('editItem', {
-        item,
-        newText
-      })
-    }
+    components: {
+      CreateItem,
+      TodoItem,
+      FilterItems,
+    },
+    methods: {
+      ...mapActions(['setAllTodos', 'setId', 'editItem', 'completeItem']),
+    },
   }
-}
 </script>
 
 <style>
-  @import url("https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
-  @font-face {
-    font-family: "Montserrat";
-    src: url("../assets/Montserrat-Light.ttf");
-    font-display: swap;
-  }
+  @import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 
   h2 {
     font-family: 'Amatic SC', cursive;
@@ -77,12 +59,6 @@ export default {
     font-weight: normal;
     text-align: center;
     font-size: 6rem;
-  }
-
-  .todos {
-    display: flex;
-    flex-direction: column;
-    width: 55%;
   }
 
   .todos ul {
@@ -95,10 +71,10 @@ export default {
     width: 50%;
     top: 60%;
     left: 25%;
-    border-top: 1px solid #2E2E34;
+    border-top: 1px solid #2e2e34;
     padding-top: 4rem;
     margin-top: 6rem;
-    color: #2E2E34;
+    color: #2e2e34;
     font-family: 'Montserrat', sans-serif;
     font-size: 2.5rem;
     text-align: center;
@@ -150,5 +126,4 @@ export default {
   }
 
   /*----КОНЕЦ СТИЛЕЙ АНИМАЦИИ----*/
-
 </style>

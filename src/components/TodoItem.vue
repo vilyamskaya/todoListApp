@@ -5,24 +5,19 @@
       type="button"
       name="delete"
       @click="deleteItem(index, $event)"
-    ><span class="fa fa-trash-o"></span>
+    >
+      <span class="fa fa-trash-o"></span>
     </button>
-    <button
-      class="btn"
-      type="button"
-      name="edit"
-      @click="startEditing"
-    ><span class="fa fa-pencil"></span>
+    <button class="btn" type="button" name="edit" @click="startEditing">
+      <span class="fa fa-pencil"></span>
     </button>
     <button
       class="btn-complete"
       type="button"
       name="check-complete"
       @click="$emit('on-complete', $event)"
-    ><span
-      :class="{visible: completed}"
-      class="fa fa-check"
-    ></span>
+    >
+      <span :class="{ visible: completed }" class="fa fa-check"></span>
     </button>
     <button
       v-if="!isEditing"
@@ -31,7 +26,8 @@
       type="button"
       name="item"
       @dblclick="startEditing"
-    >{{ text }}
+    >
+      {{ text }}
     </button>
     <div v-else class="editing-form">
       <div class="finish-editing-btns">
@@ -40,14 +36,16 @@
           type="button"
           name="finish-editing"
           @click="finishEditing"
-        ><span class="fa fa-check"></span>
+        >
+          <span class="fa fa-check"></span>
         </button>
         <button
           class="btn"
           type="button"
           name="cancel-editing"
           @click="cancelEditing"
-        ><span class="fa fa-times"></span>
+        >
+          <span class="fa fa-times"></span>
         </button>
       </div>
       <div class="wide">
@@ -57,58 +55,63 @@
           v-model="newText"
           @keyup.enter.prevent="finishEditing"
           v-focus
-        >
+        />
       </div>
     </div>
   </li>
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-      isEditing: false,
-      newText: ''
-    }
-  },
-  props: {
-    completed: Boolean,
-    text: String,
-    index: Number
-  },
-  directives: {
-    focus: {
-      inserted: function (el) {
-        el.focus()
+  export default {
+    data() {
+      return {
+        isEditing: false,
+        newText: '',
       }
-    }
-  },
-  methods: {
-    startEditing: function () {
-      this.isEditing = true
-      this.newText = this.text
     },
-    finishEditing: function () {
-      this.isEditing = false
-      this.$emit('on-edit', this.newText)
+    props: {
+      completed: {
+        type: Boolean,
+        default: false,
+      },
+      text: {
+        type: String,
+        default: '',
+      },
+      index: {
+        type: Number,
+        default: 0,
+      },
     },
-    cancelEditing: function () {
-      this.isEditing = false
+    directives: {
+      focus: {
+        inserted: function (el) {
+          el.focus()
+        },
+      },
     },
-    deleteItem: function (index, item) {
-      this.$store.commit('deleteItem', {
-        index,
-        item
-      })
-    }
-
+    methods: {
+      startEditing() {
+        this.isEditing = true
+        this.newText = this.text
+      },
+      finishEditing() {
+        this.isEditing = false
+        this.$emit('on-edit', this.newText)
+      },
+      cancelEditing() {
+        this.isEditing = false
+      },
+      deleteItem(index) {
+        this.$store.dispatch('deleteItem', index)
+      },
+    },
   }
-}
 </script>
 
 <style>
   .btn-complete {
-    border: 0.5rem solid #F49737;
+    border: 0.5rem solid #f49737;
     background: #fff;
     height: 6rem;
     width: 6rem;
@@ -119,7 +122,7 @@ export default {
   }
 
   .visible {
-    color: #2E2E34;
+    color: #2e2e34;
   }
 
   .btn-complete:focus {
@@ -135,8 +138,8 @@ export default {
     box-sizing: border-box;
     list-style: none;
     margin-bottom: 2rem;
-    border: 0.5rem solid #F8DFC7;
-    background: #F8DFC7;
+    border: 0.5rem solid #f8dfc7;
+    background: #f8dfc7;
   }
 
   .item-btn {
@@ -146,7 +149,7 @@ export default {
     background: none;
     font-size: 2.5rem;
     font-family: 'Montserrat', sans-serif;
-    color: #2E2E34;
+    color: #2e2e34;
     padding-left: 3.5rem;
   }
 
@@ -176,7 +179,7 @@ export default {
     height: 6rem;
     font-size: 2.5rem;
     font-family: 'Montserrat', sans-serif;
-    border: 0.5rem solid #2E2E34;
+    border: 0.5rem solid #2e2e34;
     border-radius: 0;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -190,13 +193,13 @@ export default {
   }
 
   .editing-form input:focus {
-    border-color: #F49737;
+    border-color: #f49737;
     outline: none;
   }
 
   @media (min-width: 768px) {
     .btn-complete:hover {
-      border-color: #2E2E34;
+      border-color: #2e2e34;
     }
   }
 </style>

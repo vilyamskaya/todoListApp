@@ -1,0 +1,11 @@
+@font-face {
+    font-family: "Amatic SC";
+    src: url("./AmaticSC-Bold.ttf");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url("./Montserrat-Light.ttf");
+    font-display: swap;
+}

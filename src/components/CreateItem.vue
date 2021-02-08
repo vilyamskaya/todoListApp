@@ -2,12 +2,8 @@
   <div class="app-header">
     <p>Напиши список дел, чтобы не забыть их выполнить</p>
     <div class="create-form">
-      <button
-        class="btn"
-        type="button"
-        name="add"
-        @click="addNewItem"
-      ><span class="fa fa-check"></span>
+      <button class="btn" type="button" name="add" @click="addNewItem">
+        <span class="fa fa-check"></span>
       </button>
       <div class="wide">
         <input
@@ -16,35 +12,35 @@
           v-model="todoText"
           @keyup.enter.prevent="addNewItem"
           v-focus
-        >
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-      todoText: ''
-    }
-  },
-  directives: {
-    focus: {
-      inserted: function (el) {
-        el.focus()
+  export default {
+    data() {
+      return {
+        todoText: '',
       }
-    }
-  },
-  methods: {
-    addNewItem: function () {
-      if (this.todoText.length > 0) {
-        this.$store.commit('addItem', this.todoText)
-      }
-      this.todoText = ''
-    }
+    },
+    directives: {
+      focus: {
+        inserted: function (el) {
+          el.focus()
+        },
+      },
+    },
+    methods: {
+      addNewItem() {
+        if (this.todoText.length > 0) {
+          this.$store.dispatch('addItem', this.todoText)
+        }
+        this.todoText = ''
+      },
+    },
   }
-}
 </script>
 
 <style>
@@ -54,7 +50,7 @@ export default {
     align-items: center;
     font-size: 2.5rem;
     font-family: 'Montserrat', sans-serif;
-    color: #2E2E34;
+    color: #2e2e34;
   }
 
   .app-header p {
@@ -77,7 +73,7 @@ export default {
     height: 6rem;
     font-size: 2.5rem;
     font-family: 'Montserrat', sans-serif;
-    border: 0.5rem solid #F8DFC7;
+    border: 0.5rem solid #f8dfc7;
     border-radius: 0;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -91,7 +87,7 @@ export default {
   }
 
   .create-form input:focus {
-    border-color: #F49737;
+    border-color: #f49737;
     outline: none;
   }
 

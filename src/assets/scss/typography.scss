@@ -1,0 +1,33 @@
+@import 'src/assets/scss/vars';
+@import 'src/assets/scss/mixins';
+
+$fs-base: 10px;
+$font-family-title: 'Amatic SC', museosans, helvetica, arial, sans-serif;
+$font-family: 'Montserrat', museosans, helvetica, arial, sans-serif;
+
+html {
+  -webkit-font-smoothing: antialiased;
+
+  font-size: $fs-base;
+  font-family: $font-family;
+  font-weight: 500;
+  letter-spacing: 0;
+
+  input,
+  textarea,
+  select,
+  button {
+    font-family: $font-family;
+    font-weight: 500;
+  }
+
+  h1 {
+    font-family: $font-family-title;
+  }
+}
+
+h1, .h1 {
+  line-height: 1;
+  font-size: 10rem;
+  font-weight: normal;
+}

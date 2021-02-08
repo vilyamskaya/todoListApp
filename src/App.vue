@@ -1,37 +1,21 @@
 <template>
-  <div id="app">
-    <h1>Твой список задач</h1>
-    <todo-list/>
+  <div id="app" class="container">
+    <todo-list />
   </div>
 </template>
 <script>
-import TodoList from './components/TodoList.vue'
+  import TodoList from './components/TodoList.vue'
 
-export default {
-  components: {
-    'todo-list': TodoList
+  export default {
+    components: {
+      TodoList,
+    },
   }
-}
 </script>
 
 <style>
-  @font-face {
-    font-family: "Amatic SC";
-    src: url("assets/AmaticSC-Bold.ttf");
-    font-display: swap;
-  }
-
-  #app {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
   h1 {
-    font-family: 'Amatic SC', cursive;
-    line-height: 1;
-    font-size: 10rem;
-    font-weight: normal;
+    /* вынести стили в todolist */
     margin: 2rem;
     text-align: center;
   }
@@ -43,7 +27,7 @@ export default {
   body {
     margin: 0;
     padding: 0;
-    background: #FFF8F2;
+    background: #fff8f2;
     overflow-y: scroll;
   }
 

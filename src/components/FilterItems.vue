@@ -1,33 +1,37 @@
 <template>
   <div class="filter">
-    <h2>{{ listName + ' задачи'}}</h2>
+    <h2>{{ listName + ' задачи' }}</h2>
     <div class="filter-btns">
-      <div class='m-filter' @mouseleave="hidden = true">
+      <div class="m-filter" @mouseleave="hidden = true">
         <button
           type="button"
           name="filters"
           class="btn btn-filter"
           @click="hidden = !hidden"
-        >Фильтры
+        >
+          Фильтры
         </button>
         <div class="content" :class="{ hidden }">
           <a
             href="#"
             class="m-btn"
             :class="{ selected: listName === 'Активные' }"
-            @click.prevent="showActive">Активные
+            @click.prevent="showActive"
+            >Активные
           </a>
           <a
             href="#"
             class="m-btn"
             :class="{ selected: listName === 'Выполненные' }"
-            @click.prevent="showDone">Выполненные
+            @click.prevent="showDone"
+            >Выполненные
           </a>
           <a
             href="#"
             class="m-btn"
             :class="{ selected: listName === 'Все' }"
-            @click.prevent="showAll">Все
+            @click.prevent="showAll"
+            >Все
           </a>
         </div>
       </div>
@@ -37,53 +41,53 @@
           name="active"
           class="btn"
           :class="{ selected: listName === 'Активные' }"
-          @click="showActive">Активные
+          @click="showActive"
+        >
+          Активные
         </button>
         <button
           type="button"
           name="done"
           class="btn"
           :class="{ selected: listName === 'Выполненные' }"
-          @click="showDone">Выполненные
+          @click="showDone"
+        >
+          Выполненные
         </button>
         <button
           type="button"
           name="all"
           class="btn"
           :class="{ selected: listName === 'Все' }"
-          @click="showAll">Все
+          @click="showAll"
+        >
+          Все
         </button>
       </div>
       <button
         type="button"
         name="delete-all"
         class="btn delete-all"
-        @click="deleteAll">Очистить список
+        @click="deleteAll"
+      >
+        Очистить список
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
 
-export default {
-  data () {
-    return {
-      hidden: true
-    }
-  },
-  computed: mapState([
-    'todoList',
-    'listName'
-  ]),
-  methods: mapMutations([
-    'showActive',
-    'showDone',
-    'showAll',
-    'deleteAll'
-  ])
-}
+  export default {
+    data() {
+      return {
+        hidden: true,
+      }
+    },
+    computed: mapGetters(['todoList', 'listName']),
+    methods: mapActions(['showActive', 'showDone', 'showAll', 'deleteAll']),
+  }
 </script>
 
 <style>
@@ -93,7 +97,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: #FFF8F2;
+    background-color: #fff8f2;
     z-index: 2;
   }
 
@@ -108,26 +112,26 @@ export default {
   }
 
   .btn {
-    border: 0.5rem solid #F49737;
-    background: #F49737;
+    border: 0.5rem solid #f49737;
+    background: #f49737;
     font-family: 'Montserrat', sans-serif;
     font-size: 2rem;
     height: 6rem;
     width: 6rem;
-    color: #FFF8F2;
+    color: #fff8f2;
     transition: all 0.5s;
     margin: 0.5rem;
   }
 
   .btn.selected {
-    border-color: #2E2E34;
-    background-color: #2E2E34;
+    border-color: #2e2e34;
+    background-color: #2e2e34;
   }
 
   .btn:active {
     color: transparent;
-    background-color: #2E2E34;
-    border-color: #2E2E34;
+    background-color: #2e2e34;
+    border-color: #2e2e34;
   }
 
   .btn:focus {
@@ -147,7 +151,7 @@ export default {
 
   .m-filter .content {
     display: block;
-    background-color: #2E2E34;
+    background-color: #2e2e34;
     list-style: none;
     margin: 0;
     padding: 1rem 0;
@@ -171,7 +175,7 @@ export default {
 
   .m-btn {
     display: block;
-    color: #FFF8F2;
+    color: #fff8f2;
     font-size: 2rem;
     font-family: 'Montserrat', sans-serif;
     text-decoration: none;
@@ -187,14 +191,14 @@ export default {
   /*}*/
 
   .m-btn:active {
-    color: #F49737;
-    border-bottom: 1px solid #F49737;
+    color: #f49737;
+    border-bottom: 1px solid #f49737;
   }
 
   @media (min-width: 768px) {
     .btn:hover {
-      border-color: #2E2E34;
-      background-color: #2E2E34;
+      border-color: #2e2e34;
+      background-color: #2e2e34;
     }
   }
 </style>

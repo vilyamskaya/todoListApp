@@ -8,75 +8,105 @@ export const store = new Vuex.Store({
   state: {
     todoList: [],
     id: null,
-    listName: 'Все'
+    listName: 'Все',
   },
   getters: {
-    filteredTodos: state => {
+    filteredTodos: (state) => {
       switch (state.listName) {
         case 'Активные':
-          return state.todoList.filter(item => item.completed === false)
+          return state.todoList.filter((item) => item.completed === false)
         case 'Выполненные':
-          return state.todoList.filter(item => item.completed === true)
+          return state.todoList.filter((item) => item.completed === true)
         default:
           return state.todoList
       }
-    }
+    },
+    todoList: (state) => state.todoList,
+    listName: (state) => state.listName,
+    id: (state) => state.id,
   },
   mutations: {
-    addItem (state, text) {
+    ADD_ITEM(state, payload) {
       const todo = {
         completed: false,
         shown: true,
-        text: text,
-        id: state.id++
+        text: payload,
+        id: state.id++,
       }
       state.todoList.push(todo)
       localStorageService.updateLocalStorage(state.todoList)
     },
-    editItem (state, { item, newText }) {
-      item.text = newText
+    EDIT_ITEM(state, payload) {
+      payload.item.text = payload.text
       localStorageService.updateLocalStorage(state.todoList)
     },
-    deleteItem (state, { index }) {
+    DELETE_ITEM(state, { index }) {
       state.todoList.splice(index, 1)
       localStorageService.updateLocalStorage(state.todoList)
     },
-    showActive (state) {
+    SHOW_ACTIVE(state) {
       state.listName = 'Активные'
     },
-    showDone (state) {
+    SHOW_DONE(state) {
       state.listName = 'Выполненные'
     },
-    showAll (state) {
+    SHOW_ALL(state) {
       state.listName = 'Все'
     },
-    deleteAll (state) {
+    DELETE_ALL(state) {
       state.todoList = []
       state.id = 0
       localStorageService.clearAll()
     },
-    setAllTodos (state) {
+    SET_ALL_TODOS(state) {
       state.todoList = localStorageService.getTodoList()
     },
-    setId (state) {
+    SET_ID(state) {
       const item = state.todoList[state.todoList.length - 1]
-      state.id = (item) ? item.id + 1 : 0
-    }
+      state.id = item ? item.id + 1 : 0
+    },
   },
   actions: {
-    completeItem ({ commit, state }, item) {
+    completeItem({ commit, state }, item) {
       item.completed = !item.completed
       localStorageService.updateLocalStorage(state.todoList)
       switch (state.listName) {
         case 'Активные':
-          commit('showActive')
+          commit('SHOW_ACTIVE')
           break
         case 'Выполненные':
-          commit('showDone')
+          commit('SHOW_DONE')
           break
         default:
-          commit('showAll')
+          commit('SHOW_ALL')
       }
-    }
-  }
+    },
+    addItem({ commit }, payload) {
+      commit('ADD_ITEM', payload)
+    },
+    editItem({ commit }, payload) {
+      commit('EDIT_ITEM', payload)
+    },
+    deleteItem({ commit }, payload) {
+      commit('DELETE_ITEM', payload)
+    },
+    showActive({ commit }) {
+      commit('SHOW_ACTIVE')
+    },
+    showDone({ commit }) {
+      commit('SHOW_DONE')
+    },
+    showAll({ commit }) {
+      commit('SHOW_ALL')
+    },
+    deleteAll({ commit }) {
+      commit('DELETE_ALL')
+    },
+    setAllTodos({ commit }) {
+      commit('SET_ALL_TODOS')
+    },
+    setId({ commit }) {
+      commit('SET_ID')
+    },
+  },
 })

@@ -1,0 +1,25 @@
+@import '~reset-css';
+@import 'src/assets/scss/vars';
+@import 'src/assets/scss/mixins';
+@import 'src/assets/scss/typography';
+
+* {
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: $color-accent;
+  overflow-y: scroll;
+}
+
+button {
+  cursor: pointer;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 55%;
+}
