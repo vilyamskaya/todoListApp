@@ -2,6 +2,8 @@
 @import 'src/assets/scss/vars';
 @import 'src/assets/scss/mixins';
 @import 'src/assets/scss/typography';
+@import 'fonts.css';
+@import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 
 * {
   margin: 0;
@@ -10,16 +12,42 @@
 body {
   margin: 0;
   padding: 0;
-  background: $color-accent;
+  background: $color-bg;
   overflow-y: scroll;
 }
 
 button {
   cursor: pointer;
+  outline: none;
+}
+
+input {
+  outline: none;
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  width: 55%;
+  margin: auto;
+  width: 90%;
+  @include from-br(m) {
+    width: 80%;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: $color-box;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $color-accent;
 }

@@ -1,204 +1,174 @@
 <template>
   <div class="filter">
-    <h2>{{ listName + ' задачи' }}</h2>
+    <h2 class="filter-title">{{ listName + ' задачи' }}</h2>
     <div class="filter-btns">
-      <div class="m-filter" @mouseleave="hidden = true">
-        <button
-          type="button"
-          name="filters"
-          class="btn btn-filter"
+      <div
+        :class="{
+          'm-filter': isMobile,
+          'desk-filter': !isMobile,
+        }"
+        @mouseleave="hideList"
+      >
+        <base-btn
+          v-if="isMobile"
+          :name="'filters'"
+          class="btn-filter"
           @click="hidden = !hidden"
         >
           Фильтры
-        </button>
-        <div class="content" :class="{ hidden }">
-          <a
+        </base-btn>
+        <div class="content" :class="{ hidden: hidden && isMobile }">
+          <component
+            :is="isMobile ? 'a' : 'base-btn'"
             href="#"
-            class="m-btn"
-            :class="{ selected: listName === 'Активные' }"
+            :name="'active'"
+            :selected="listName === 'Активные'"
+            :class="{
+              'm-btn': isMobile,
+            }"
+            class="first-btn"
             @click.prevent="showActive"
             >Активные
-          </a>
-          <a
+          </component>
+          <component
+            :is="isMobile ? 'a' : 'base-btn'"
             href="#"
-            class="m-btn"
-            :class="{ selected: listName === 'Выполненные' }"
+            :name="'done'"
+            :selected="listName === 'Выполненные'"
+            :class="{
+              'm-btn': isMobile,
+            }"
             @click.prevent="showDone"
             >Выполненные
-          </a>
-          <a
+          </component>
+          <component
+            :is="isMobile ? 'a' : 'base-btn'"
             href="#"
-            class="m-btn"
-            :class="{ selected: listName === 'Все' }"
+            :name="'all'"
+            :selected="listName === 'Все'"
+            :class="{
+              'm-btn': isMobile,
+            }"
             @click.prevent="showAll"
             >Все
-          </a>
+          </component>
         </div>
       </div>
-      <div class="visible-lg">
-        <button
-          type="button"
-          name="active"
-          class="btn"
-          :class="{ selected: listName === 'Активные' }"
-          @click="showActive"
-        >
-          Активные
-        </button>
-        <button
-          type="button"
-          name="done"
-          class="btn"
-          :class="{ selected: listName === 'Выполненные' }"
-          @click="showDone"
-        >
-          Выполненные
-        </button>
-        <button
-          type="button"
-          name="all"
-          class="btn"
-          :class="{ selected: listName === 'Все' }"
-          @click="showAll"
-        >
-          Все
-        </button>
-      </div>
-      <button
-        type="button"
-        name="delete-all"
-        class="btn delete-all"
-        @click="deleteAll"
-      >
+      <base-btn :name="'delete-all'" class="delete-all" @click="deleteAll">
         Очистить список
-      </button>
+      </base-btn>
     </div>
   </div>
 </template>
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
+  import BaseBtn from './BaseBtn'
 
   export default {
+    components: {
+      BaseBtn,
+    },
     data() {
       return {
         hidden: true,
       }
     },
-    computed: mapGetters(['todoList', 'listName']),
-    methods: mapActions(['showActive', 'showDone', 'showAll', 'deleteAll']),
+    computed: {
+      ...mapGetters(['todoList', 'listName']),
+      isMobile() {
+        return this.isPhone || this.isTablet
+      },
+    },
+    methods: {
+      ...mapActions(['showActive', 'showDone', 'showAll', 'deleteAll']),
+      hideList() {
+        if (this.isMobile) this.hidden = true
+      },
+    },
   }
 </script>
 
-<style>
+<style lang="scss" scoped>
+  @import '../assets/scss/vars';
+  @import '../assets/scss/mixins';
+
   .filter {
     position: sticky;
     top: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: #fff8f2;
-    z-index: 2;
-  }
+    background-color: $color-bg;
+    z-index: $z-plus;
 
-  .filter-btns {
-    display: flex;
-    justify-content: space-between;
-  }
+    &-title {
+      margin: $p-20;
+      text-align: center;
+    }
 
-  .filter button {
-    width: auto;
-    padding: 0 1rem;
-  }
+    &-btns {
+      display: flex;
+      justify-content: space-between;
 
-  .btn {
-    border: 0.5rem solid #f49737;
-    background: #f49737;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2rem;
-    height: 6rem;
-    width: 6rem;
-    color: #fff8f2;
-    transition: all 0.5s;
-    margin: 0.5rem;
-  }
+      .m-filter {
+        position: relative;
+        margin: $p-5;
+        margin-left: 0;
 
-  .btn.selected {
-    border-color: #2e2e34;
-    background-color: #2e2e34;
-  }
+        .content {
+          display: block;
+          background-color: $color-black;
+          margin: 0;
+          padding: $p-10 0;
+          position: absolute;
+          z-index: $z-plus;
+          top: 100%;
+          left: 0;
+          width: 150px;
+          text-align: center;
+          box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 
-  .btn:active {
-    color: transparent;
-    background-color: #2e2e34;
-    border-color: #2e2e34;
-  }
+          &.hidden {
+            display: none;
+          }
 
-  .btn:focus {
-    outline: none;
-  }
+          .m-btn {
+            display: block;
+            color: $color-bg;
+            padding: $p-10;
+            margin: 0;
+            border-bottom: 1px solid transparent;
+            transition: all 0.5s;
+            @include from-br(m) {
+              font-size: $fs-20;
+            }
 
-  .m-filter {
-    display: none;
-    position: relative;
-    margin: 0.5rem;
-  }
+            :active {
+              color: $color-accent;
+              border-bottom: 1px solid $color-accent;
+            }
+          }
+        }
+      }
 
-  .btn-filter {
-    border: none;
-    margin: 0;
-  }
+      .btn-filter {
+        border: none;
+        margin: 0;
+      }
 
-  .m-filter .content {
-    display: block;
-    background-color: #2e2e34;
-    list-style: none;
-    margin: 0;
-    padding: 1rem 0;
-    position: absolute;
-    z-index: 2;
-    top: 100%;
-    left: 0;
-    width: 20rem;
-    text-align: center;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-  }
+      .first-btn {
+        margin-left: 0;
+      }
 
-  .m-filter .content.hidden {
-    display: none;
-  }
+      .delete-all {
+        margin-right: 0;
+      }
+    }
 
-  /*.m-filter:hover .btn-filter {*/
-  /*  background-color: #2E2E34;*/
-  /*  color: #FFF8F2;*/
-  /*}*/
-
-  .m-btn {
-    display: block;
-    color: #fff8f2;
-    font-size: 2rem;
-    font-family: 'Montserrat', sans-serif;
-    text-decoration: none;
-    padding: 1rem;
-    margin: 0;
-    border-bottom: 1px solid transparent;
-    transition: all 0.5s;
-  }
-
-  /*.m-btn:hover {*/
-  /*  border-bottom: 1px solid #F49737;*/
-  /*  color: #F49737;*/
-  /*}*/
-
-  .m-btn:active {
-    color: #f49737;
-    border-bottom: 1px solid #f49737;
-  }
-
-  @media (min-width: 768px) {
-    .btn:hover {
-      border-color: #2e2e34;
-      background-color: #2e2e34;
+    button {
+      width: auto;
+      padding: 0 $p-10;
     }
   }
 </style>

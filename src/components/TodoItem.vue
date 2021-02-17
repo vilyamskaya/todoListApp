@@ -1,16 +1,11 @@
 <template>
   <li class="list-item">
-    <button
-      class="btn"
-      type="button"
-      name="delete"
-      @click="deleteItem(index, $event)"
-    >
+    <base-btn :name="'delete'" @click="deleteItem(index, $event)">
       <span class="fa fa-trash-o"></span>
-    </button>
-    <button class="btn" type="button" name="edit" @click="startEditing">
+    </base-btn>
+    <base-btn :name="'edit'" @click="startEditing">
       <span class="fa fa-pencil"></span>
-    </button>
+    </base-btn>
     <button
       class="btn-complete"
       type="button"
@@ -31,22 +26,12 @@
     </button>
     <div v-else class="editing-form">
       <div class="finish-editing-btns">
-        <button
-          class="btn"
-          type="button"
-          name="finish-editing"
-          @click="finishEditing"
-        >
+        <base-btn :name="'finish-editing'" @click="finishEditing">
           <span class="fa fa-check"></span>
-        </button>
-        <button
-          class="btn"
-          type="button"
-          name="cancel-editing"
-          @click="cancelEditing"
-        >
+        </base-btn>
+        <base-btn :name="'cancel-editing'" @click="cancelEditing">
           <span class="fa fa-times"></span>
-        </button>
+        </base-btn>
       </div>
       <div class="wide">
         <input
@@ -62,7 +47,10 @@
 </template>
 
 <script>
+  import BaseBtn from './BaseBtn'
+
   export default {
+    components: { BaseBtn },
     data() {
       return {
         isEditing: false,
@@ -109,25 +97,9 @@
   }
 </script>
 
-<style>
-  .btn-complete {
-    border: 0.5rem solid #f49737;
-    background: #fff;
-    height: 6rem;
-    width: 6rem;
-    font-size: 2.5rem;
-    color: transparent;
-    transition: all 0.5s;
-    margin: 0.5rem;
-  }
-
-  .visible {
-    color: #2e2e34;
-  }
-
-  .btn-complete:focus {
-    outline: none;
-  }
+<style lang="scss" scoped>
+  @import '../assets/scss/vars';
+  @import '../assets/scss/mixins';
 
   .list-item {
     display: flex;
@@ -136,70 +108,113 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    list-style: none;
-    margin-bottom: 2rem;
-    border: 0.5rem solid #f8dfc7;
-    background: #f8dfc7;
-  }
+    margin-bottom: $p-20;
+    border: 1px solid $color-box;
+    background: $color-box;
+    @include from-br(m) {
+      border: 5px solid $color-box;
+    }
 
-  .item-btn {
-    width: 80%;
-    text-align: left;
-    border: none;
-    background: none;
-    font-size: 2.5rem;
-    font-family: 'Montserrat', sans-serif;
-    color: #2e2e34;
-    padding-left: 3.5rem;
-  }
+    .btn-complete {
+      border: 3px solid $color-accent;
+      background: $color-white;
+      height: 45px;
+      width: 45px;
+      color: transparent;
+      transition: all 0.5s;
+      margin: $p-5;
+      @include from-br(m) {
+        border-width: 5px;
+        height: 60px;
+        width: 60px;
+        margin: $p-10;
+      }
 
-  .item-btn:focus {
-    outline: none;
-  }
+      &:hover {
+        @include from-br(sm) {
+          border-color: $color-black;
+        }
+      }
 
-  .item-btn.completed {
-    text-decoration: line-through;
-    opacity: 0.5;
-  }
+      &:focus {
+        outline: none;
+      }
 
-  .editing-form {
-    width: 80%;
-  }
+      .visible {
+        color: $color-black;
+      }
+    }
 
-  .finish-editing-btns {
-    width: 14.5rem;
-    margin-left: 0.5rem;
-    float: right;
-    display: block;
-  }
+    .btn {
+      margin-right: 0;
+      width: 45px;
+      @include from-br(m) {
+        width: 60px;
+      }
+    }
 
-  .editing-form input {
-    width: 99%;
-    display: block;
-    height: 6rem;
-    font-size: 2.5rem;
-    font-family: 'Montserrat', sans-serif;
-    border: 0.5rem solid #2e2e34;
-    border-radius: 0;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    padding: 0 2rem;
-    transition: all 0.5s;
-    margin: 0.5rem;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
+    .item-btn {
+      width: 80%;
+      text-align: left;
+      border: none;
+      background: none;
+      padding-left: $p-5;
+      @include from-br(m) {
+        padding-left: $p-20 + 5px;
+      }
 
-  .editing-form input:focus {
-    border-color: #f49737;
-    outline: none;
-  }
+      &:focus {
+        outline: none;
+      }
 
-  @media (min-width: 768px) {
-    .btn-complete:hover {
-      border-color: #2e2e34;
+      &.completed {
+        text-decoration: line-through;
+        opacity: 0.5;
+      }
+    }
+
+    .editing-form {
+      width: 80%;
+
+      .finish-editing-btns {
+        width: 105px;
+        float: right;
+        display: block;
+        @include from-br(m) {
+          width: 145px;
+        }
+      }
+
+      input {
+        width: 99%;
+        display: block;
+        height: 45px;
+        border: 3px solid $color-black;
+        border-radius: 0;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 0 $p-10;
+        transition: all 0.5s;
+        margin: $p-5 0;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        @include from-br(m) {
+          border-width: 5px;
+          height: 60px;
+          padding: 0 $p-20;
+        }
+
+        :focus {
+          border-color: $color-accent;
+          outline: none;
+        }
+      }
+
+      .wide {
+        overflow: hidden;
+      }
     }
   }
 </style>

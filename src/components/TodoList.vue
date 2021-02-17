@@ -1,11 +1,11 @@
 <template>
-  <div class="todos">
-    <h1>Твой список задач</h1>
+  <div class="container todos">
+    <h1 class="todos-title">Твой список задач</h1>
     <create-item />
     <transition name="slide-fade" appear>
       <div v-if="todoList.length">
         <filter-items />
-        <transition-group name="list" tag="ul" appear>
+        <transition-group name="list" tag="ul" class="todos-list" appear>
           <li
             is="todo-item"
             v-for="item in filteredTodos"
@@ -19,7 +19,7 @@
           />
         </transition-group>
       </div>
-      <p class="empty" v-else>Список задач пуст</p>
+      <p class="empty text-md" v-else>Список задач пуст</p>
     </transition>
   </div>
 </template>
@@ -49,21 +49,21 @@
   }
 </script>
 
-<style>
-  @import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+<style lang="scss" scoped>
+  @import '../assets/scss/vars';
+  @import '../assets/scss/mixins';
 
-  h2 {
-    font-family: 'Amatic SC', cursive;
-    line-height: 1;
-    margin: 2rem;
-    font-weight: normal;
-    text-align: center;
-    font-size: 6rem;
-  }
+  .todos {
+    &-title {
+      margin: $p-20 0;
+      text-align: center;
+    }
 
-  .todos ul {
-    padding: 0;
-    position: relative;
+    &-list {
+      padding: 0;
+      margin-top: $p-5;
+      position: relative;
+    }
   }
 
   .empty {
@@ -71,12 +71,9 @@
     width: 50%;
     top: 60%;
     left: 25%;
-    border-top: 1px solid #2e2e34;
-    padding-top: 4rem;
-    margin-top: 6rem;
-    color: #2e2e34;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2.5rem;
+    border-top: 1px solid $color-black;
+    padding-top: $p-40;
+    margin-top: $p-60;
     text-align: center;
   }
 
@@ -84,7 +81,7 @@
 
   .slide-fade-enter {
     opacity: 0;
-    transform: translateY(20rem);
+    transform: translateY($p-20 * 10);
   }
 
   .slide-fade-leave-to {
@@ -104,12 +101,12 @@
 
   .list-enter {
     opacity: 0;
-    transform: translateY(20rem);
+    transform: translateY($p-20 * 10);
   }
 
   .list-leave-to {
     opacity: 0;
-    transform: translateX(-40rem);
+    transform: translateX(-$p-40 * 10);
   }
 
   .list-enter-active,

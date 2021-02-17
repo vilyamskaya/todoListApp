@@ -1,13 +1,14 @@
 <template>
   <div class="app-header">
-    <p>Напиши список дел, чтобы не забыть их выполнить</p>
+    <p class="text-md">Напиши список дел, чтобы не забыть их выполнить</p>
     <div class="create-form">
-      <button class="btn" type="button" name="add" @click="addNewItem">
+      <base-btn class="btn" :name="'add'" @click="addNewItem">
         <span class="fa fa-check"></span>
-      </button>
+      </base-btn>
       <div class="wide">
         <input
           aria-label="Write a to-do"
+          class="create-form-input"
           type="text"
           v-model="todoText"
           @keyup.enter.prevent="addNewItem"
@@ -19,7 +20,10 @@
 </template>
 
 <script>
+  import BaseBtn from './BaseBtn'
+
   export default {
+    components: { BaseBtn },
     data() {
       return {
         todoText: '',
@@ -43,56 +47,68 @@
   }
 </script>
 
-<style>
+<style lang="scss" scoped>
+  @import '../assets/scss/vars';
+  @import '../assets/scss/mixins';
+
   .app-header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 2.5rem;
-    font-family: 'Montserrat', sans-serif;
-    color: #2e2e34;
-  }
+    color: $color-black;
 
-  .app-header p {
-    text-align: center;
-  }
+    p {
+      text-align: center;
+      margin: $p-20 0;
+    }
 
-  .wide {
-    overflow: hidden;
-    margin-left: 0.5rem;
-  }
+    .create-form {
+      width: 100%;
+      margin-bottom: $p-20 * 2;
+      @include from-br(m) {
+        width: 70%;
+        margin-bottom: $p-40 * 2;
+      }
 
-  .create-form {
-    min-width: 70%;
-    margin-bottom: 8rem;
-  }
+      .wide {
+        overflow: hidden;
+        margin-left: $p-5;
+      }
 
-  .create-form input {
-    width: 98%;
-    display: block;
-    height: 6rem;
-    font-size: 2.5rem;
-    font-family: 'Montserrat', sans-serif;
-    border: 0.5rem solid #f8dfc7;
-    border-radius: 0;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    padding: 0 2rem;
-    transition: all 0.5s;
-    margin: 0.5rem;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
+      &-input {
+        width: 98%;
+        display: block;
+        height: 45px;
+        border: 3px solid $color-box;
+        border-radius: 0;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 0 $p-10;
+        transition: all 0.5s;
+        margin: $p-5;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        @include from-br(m) {
+          height: 60px;
+          border-width: 5px;
+        }
 
-  .create-form input:focus {
-    border-color: #f49737;
-    outline: none;
-  }
+        &:focus {
+          border-color: $color-accent;
+          outline: none;
+        }
+      }
 
-  .create-form .btn {
-    float: right;
-    display: block;
+      .btn {
+        float: right;
+        display: block;
+        width: 45px;
+        @include from-br(m) {
+          width: 60px;
+        }
+      }
+    }
   }
 </style>
