@@ -204,6 +204,7 @@
           border-width: 5px;
           height: 60px;
           padding: 0 $p-20;
+          margin: $p-10 0;
         }
 
         :focus {

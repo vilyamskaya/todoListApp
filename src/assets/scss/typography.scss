@@ -51,9 +51,9 @@ h2 {
 }
 
 .text-md {
-  font-size: $fs-16;
+  font-size: $fs-base;
   line-height: 1.2;
   @include from-br(md) {
-    font-size: $fs-base;
+    font-size: $fs-25;
   }
 }

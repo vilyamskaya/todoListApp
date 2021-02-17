@@ -20,36 +20,36 @@
         <div class="content" :class="{ hidden: hidden && isMobile }">
           <component
             :is="isMobile ? 'a' : 'base-btn'"
-            href="#"
+            href=""
             :name="'active'"
             :selected="listName === 'Активные'"
             :class="{
               'm-btn': isMobile,
             }"
             class="first-btn"
-            @click.prevent="showActive"
+            @click="showActive"
             >Активные
           </component>
           <component
             :is="isMobile ? 'a' : 'base-btn'"
-            href="#"
+            href=""
             :name="'done'"
             :selected="listName === 'Выполненные'"
             :class="{
               'm-btn': isMobile,
             }"
-            @click.prevent="showDone"
+            @click="showDone"
             >Выполненные
           </component>
           <component
             :is="isMobile ? 'a' : 'base-btn'"
-            href="#"
+            href=""
             :name="'all'"
             :selected="listName === 'Все'"
             :class="{
               'm-btn': isMobile,
             }"
-            @click.prevent="showAll"
+            @click="showAll"
             >Все
           </component>
         </div>

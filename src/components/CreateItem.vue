@@ -93,6 +93,7 @@
         @include from-br(m) {
           height: 60px;
           border-width: 5px;
+          margin: $p-10;
         }
 
         &:focus {
