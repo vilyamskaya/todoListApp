@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import { store } from './store'
 import mixin from './mixins/vue-mq'
+import './registerServiceWorker'
 
 Vue.mixin(mixin)
 Vue.config.productionTip = false

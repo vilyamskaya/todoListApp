@@ -3,11 +3,6 @@
   "version": "0.1.0",
   "private": false,
   "author": "Vilyamskaya",
-  "main": "src/main.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vilyamskaya/todoListApp.git"
-  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -15,10 +10,11 @@
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint"
   },
+  "main": "src/main.js",
   "dependencies": {
-    "@vue/cli-plugin-pwa": "^4.5.12",
     "core-js": "^3.6.5",
     "node-sass": "^5.0.0",
+    "register-service-worker": "^1.7.1",
     "reset-css": "^5.0.1",
     "sass-loader": "^10.1.1",
     "vue": "^2.6.11",
@@ -28,6 +24,7 @@
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-e2e-cypress": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-pwa": "^4.5.12",
     "@vue/cli-plugin-unit-mocha": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-standard": "^5.1.2",
@@ -55,5 +52,9 @@
       "vue-cli-service lint",
       "git add"
     ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vilyamskaya/todoListApp.git"
   }
 }
