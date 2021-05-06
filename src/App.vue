@@ -50,6 +50,7 @@
     position: relative;
     min-height: 100vh;
     background: var(--color-bg);
+    color: var(--color-black);
     .picker {
       position: relative;
       top: $p-10;

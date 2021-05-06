@@ -3,7 +3,7 @@
     <p class="text-md">Напиши список дел, чтобы не забыть их выполнить</p>
     <div class="create-form">
       <base-btn class="btn" :name="'add'" @click="addNewItem">
-        <span class="fa fa-check"></span>
+        <img src="../assets/img/check-white.svg" alt="add item" />
       </base-btn>
       <div class="wide">
         <input
@@ -108,6 +108,16 @@
         width: 45px;
         @include from-br(m) {
           width: 60px;
+        }
+
+        img {
+          width: 12px;
+          height: 12px;
+          vertical-align: middle;
+          @include from-br(m) {
+            width: 16px;
+            height: 16px;
+          }
         }
       }
     }

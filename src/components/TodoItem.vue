@@ -1,18 +1,32 @@
 <template>
   <li class="list-item">
-    <base-btn :name="'delete'" @click="deleteItem(index, $event)">
-      <span class="fa fa-trash-o"></span>
-    </base-btn>
-    <base-btn :name="'edit'" @click="startEditing">
-      <span class="fa fa-pencil"></span>
-    </base-btn>
+    <div class="btns" v-if="!isEditing">
+      <base-btn :name="'delete'" @click="deleteItem(index, $event)">
+        <img src="../assets/img/garbage.svg" alt="delete item" />
+      </base-btn>
+      <base-btn :name="'edit'" @click="startEditing">
+        <img src="../assets/img/pencil.svg" alt="edit item" />
+      </base-btn>
+    </div>
+    <div class="btns" v-else>
+      <base-btn :name="'finish-editing'" @click="finishEditing">
+        <img src="../assets/img/check-white.svg" alt="save item" />
+      </base-btn>
+      <base-btn :name="'cancel-editing'" @click="cancelEditing">
+        <img src="../assets/img/remove.svg" alt="close item" />
+      </base-btn>
+    </div>
     <button
       class="btn-complete"
       type="button"
       name="check-complete"
       @click="$emit('on-complete', $event)"
     >
-      <span :class="{ visible: completed }" class="fa fa-check"></span>
+      <img
+        src="../assets/img/check-dark.svg"
+        :class="{ visible: completed }"
+        alt="check item"
+      />
     </button>
     <button
       v-if="!isEditing"
@@ -24,25 +38,14 @@
     >
       {{ text }}
     </button>
-    <div v-else class="editing-form">
-      <div class="finish-editing-btns">
-        <base-btn :name="'finish-editing'" @click="finishEditing">
-          <span class="fa fa-check"></span>
-        </base-btn>
-        <base-btn :name="'cancel-editing'" @click="cancelEditing">
-          <span class="fa fa-times"></span>
-        </base-btn>
-      </div>
-      <div class="wide">
-        <input
-          aria-label="Edit to-do"
-          type="text"
-          v-model="newText"
-          @keyup.enter.prevent="finishEditing"
-          v-focus
-        />
-      </div>
-    </div>
+    <input
+      v-else
+      aria-label="Edit to-do"
+      type="text"
+      v-model="newText"
+      @keyup.enter.prevent="finishEditing"
+      v-focus
+    />
   </li>
 </template>
 
@@ -115,17 +118,22 @@
       border: 5px solid var(--color-box);
     }
 
+    .btns {
+      display: flex;
+    }
+
     .btn-complete {
       border: 3px solid var(--color-accent);
       background: var(--color-white);
       height: 45px;
+      min-width: 45px;
       width: 45px;
-      color: transparent;
       transition: all 0.5s;
       margin: $p-5;
       @include from-br(m) {
         border-width: 5px;
         height: 60px;
+        min-width: 60px;
         width: 60px;
         margin: $p-10;
       }
@@ -140,8 +148,19 @@
         outline: none;
       }
 
+      img {
+        visibility: hidden;
+        width: 12px;
+        height: 12px;
+        vertical-align: middle;
+        @include from-br(m) {
+          width: 16px;
+          height: 16px;
+        }
+      }
+
       .visible {
-        color: var(--color-black);
+        visibility: visible;
       }
     }
 
@@ -150,6 +169,16 @@
       width: 45px;
       @include from-br(m) {
         width: 60px;
+      }
+
+      img {
+        width: 12px;
+        height: 12px;
+        vertical-align: middle;
+        @include from-br(m) {
+          width: 16px;
+          height: 16px;
+        }
       }
     }
 
@@ -173,48 +202,31 @@
       }
     }
 
-    .editing-form {
+    input {
       width: 80%;
-
-      .finish-editing-btns {
-        width: 105px;
-        float: right;
-        display: block;
-        @include from-br(m) {
-          width: 145px;
-        }
+      display: block;
+      height: 45px;
+      border: 3px solid var(--color-black);
+      border-radius: 0;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      padding: 0 $p-10;
+      transition: all 0.5s;
+      margin: $p-5 $p-5 $p-5 0;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      @include from-br(m) {
+        border-width: 5px;
+        height: 60px;
+        padding: 0 $p-20;
+        margin: $p-10 $p-10 $p-10 0;
       }
 
-      input {
-        width: 99%;
-        display: block;
-        height: 45px;
-        border: 3px solid var(--color-black);
-        border-radius: 0;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        padding: 0 $p-10;
-        transition: all 0.5s;
-        margin: $p-5 0;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        @include from-br(m) {
-          border-width: 5px;
-          height: 60px;
-          padding: 0 $p-20;
-          margin: $p-10 0;
-        }
-
-        :focus {
-          border-color: var(--color-accent);
-          outline: none;
-        }
-      }
-
-      .wide {
-        overflow: hidden;
+      :focus {
+        border-color: var(--color-accent);
+        outline: none;
       }
     }
   }
