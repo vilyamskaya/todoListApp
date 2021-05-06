@@ -24,10 +24,10 @@
   @import '../assets/scss/mixins';
 
   .btn {
-    border: 5px solid $color-accent;
-    background: $color-accent;
+    border: 5px solid var(--color-accent);
+    background: var(--color-accent);
     height: 45px;
-    color: $color-bg;
+    color: var(--color-white);
     transition: all 0.5s;
     margin: $p-5;
     @include from-br(m) {
@@ -37,20 +37,20 @@
 
     &:hover {
       @include from-br(sm) {
-        border-color: $color-black;
-        background-color: $color-black;
+        border-color: var(--color-black);
+        background-color: var(--color-black);
       }
     }
 
     .selected {
-      border-color: $color-black;
-      background-color: $color-black;
+      border-color: var(--color-black);
+      background-color: var(--color-black);
     }
 
     :active {
       color: transparent;
-      background-color: $color-black;
-      border-color: $color-black;
+      background-color: var(--color-black);
+      border-color: var(--color-black);
     }
 
     :focus {

@@ -71,7 +71,7 @@
     width: 50%;
     top: 60%;
     left: 25%;
-    border-top: 1px solid $color-black;
+    border-top: 1px solid var(--color-black);
     padding-top: $p-40;
     margin-top: $p-60;
     text-align: center;

@@ -55,7 +55,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: $color-black;
+    color: var(--color-black);
 
     p {
       text-align: center;
@@ -79,7 +79,7 @@
         width: 98%;
         display: block;
         height: 45px;
-        border: 3px solid $color-box;
+        border: 3px solid var(--color-box);
         border-radius: 0;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
@@ -97,7 +97,7 @@
         }
 
         &:focus {
-          border-color: $color-accent;
+          border-color: var(--color-accent);
           outline: none;
         }
       }

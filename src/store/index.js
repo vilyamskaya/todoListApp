@@ -9,6 +9,7 @@ export const store = new Vuex.Store({
     todoList: [],
     id: null,
     listName: 'Все',
+    color: null,
   },
   getters: {
     filteredTodos: (state) => {
@@ -24,6 +25,7 @@ export const store = new Vuex.Store({
     todoList: (state) => state.todoList,
     listName: (state) => state.listName,
     id: (state) => state.id,
+    color: (state) => state.color,
   },
   mutations: {
     ADD_ITEM(state, payload) {
@@ -64,6 +66,13 @@ export const store = new Vuex.Store({
     SET_ID(state) {
       const item = state.todoList[state.todoList.length - 1]
       state.id = item ? item.id + 1 : 0
+    },
+    SET_COLOR(state, payload) {
+      state.color = payload
+      localStorageService.setColor(payload)
+    },
+    GET_COLOR(state) {
+      state.color = localStorageService.getColor()
     },
   },
   actions: {
@@ -107,6 +116,12 @@ export const store = new Vuex.Store({
     },
     setId({ commit }) {
       commit('SET_ID')
+    },
+    setColor({ commit }, payload) {
+      commit('SET_COLOR', payload)
+    },
+    getColor({ commit }) {
+      commit('GET_COLOR')
     },
   },
 })

@@ -12,7 +12,6 @@
 body {
   margin: 0;
   padding: 0;
-  background: $color-bg;
   overflow-y: scroll;
 }
 
@@ -41,14 +40,14 @@ a {
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 3px;
+  height: 3px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: $color-box;
+  background-color: #ffffff;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: $color-accent;
+  background-color: #333333;
 }

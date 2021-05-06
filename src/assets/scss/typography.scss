@@ -11,7 +11,7 @@ html {
   font-size: $fs-base;
   font-family: $font-family;
   font-weight: 500;
-  color: $color-black;
+  color: var(--color-black);
   letter-spacing: 0;
 
   input,
@@ -19,7 +19,7 @@ html {
   select,
   button {
     font-family: $font-family;
-    font-weight: 500;
+    font-weight: 400;
     font-size: $fs-base;
   }
 
@@ -35,7 +35,7 @@ html {
 h1, .h1 {
   line-height: 1;
   font-size: $fs-60;
-  font-weight: normal;
+  font-weight: 400;
   @include from-br(m) {
     font-size: $fs-100;
   }
@@ -43,7 +43,7 @@ h1, .h1 {
 
 h2 {
   line-height: 1;
-  font-weight: normal;
+  font-weight: 400;
   font-size: $fs-40;
   @include from-br(m) {
     font-size: $fs-60;
@@ -52,6 +52,7 @@ h2 {
 
 .text-md {
   font-size: $fs-base;
+  font-weight: 400;
   line-height: 1.2;
   @include from-br(md) {
     font-size: $fs-25;

@@ -16,6 +16,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@vue/cli-plugin-pwa": "^4.5.12",
     "core-js": "^3.6.5",
     "node-sass": "^5.0.0",
     "reset-css": "^5.0.1",

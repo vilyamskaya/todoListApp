@@ -109,15 +109,15 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     margin-bottom: $p-20;
-    border: 1px solid $color-box;
-    background: $color-box;
+    border: 1px solid var(--color-box);
+    background: var(--color-box);
     @include from-br(m) {
-      border: 5px solid $color-box;
+      border: 5px solid var(--color-box);
     }
 
     .btn-complete {
-      border: 3px solid $color-accent;
-      background: $color-white;
+      border: 3px solid var(--color-accent);
+      background: var(--color-white);
       height: 45px;
       width: 45px;
       color: transparent;
@@ -132,7 +132,7 @@
 
       &:hover {
         @include from-br(sm) {
-          border-color: $color-black;
+          border-color: var(--color-black);
         }
       }
 
@@ -141,7 +141,7 @@
       }
 
       .visible {
-        color: $color-black;
+        color: var(--color-black);
       }
     }
 
@@ -189,7 +189,7 @@
         width: 99%;
         display: block;
         height: 45px;
-        border: 3px solid $color-black;
+        border: 3px solid var(--color-black);
         border-radius: 0;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
@@ -208,7 +208,7 @@
         }
 
         :focus {
-          border-color: $color-accent;
+          border-color: var(--color-accent);
           outline: none;
         }
       }

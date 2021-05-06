@@ -99,7 +99,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: $color-bg;
+    background-color: var(--color-bg);
     z-index: $z-plus;
 
     &-title {
@@ -118,7 +118,7 @@
 
         .content {
           display: block;
-          background-color: $color-black;
+          background-color: var(--color-black);
           margin: 0;
           padding: $p-10 0;
           position: absolute;
@@ -135,7 +135,7 @@
 
           .m-btn {
             display: block;
-            color: $color-bg;
+            color: var(--color-bg);
             padding: $p-10;
             margin: 0;
             border-bottom: 1px solid transparent;
@@ -145,8 +145,8 @@
             }
 
             :active {
-              color: $color-accent;
-              border-bottom: 1px solid $color-accent;
+              color: var(--color-accent);
+              border-bottom: 1px solid var(--color-accent);
             }
           }
         }
