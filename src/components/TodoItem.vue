@@ -130,6 +130,7 @@
       width: 45px;
       transition: all 0.5s;
       margin: $p-5;
+      position: relative;
       @include from-br(m) {
         border-width: 5px;
         height: 60px;
@@ -152,10 +153,14 @@
         visibility: hidden;
         width: 12px;
         height: 12px;
-        vertical-align: middle;
+        position: absolute;
+        top: calc(50% - 6px);
+        left: calc(50% - 6px);
         @include from-br(m) {
           width: 16px;
           height: 16px;
+          top: calc(50% - 8px);
+          left: calc(50% - 8px);
         }
       }
 
@@ -167,6 +172,7 @@
     .btn {
       margin-right: 0;
       width: 45px;
+      position: relative;
       @include from-br(m) {
         width: 60px;
       }
@@ -174,10 +180,14 @@
       img {
         width: 12px;
         height: 12px;
-        vertical-align: middle;
+        position: absolute;
+        top: calc(50% - 6px);
+        left: calc(50% - 6px);
         @include from-br(m) {
           width: 16px;
           height: 16px;
+          top: calc(50% - 8px);
+          left: calc(50% - 8px);
         }
       }
     }

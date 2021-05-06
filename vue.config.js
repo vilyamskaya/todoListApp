@@ -1,7 +1,7 @@
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? '/todoListApp/' : '/',
   pwa: {
-    name: 'Твой список задач',
+    name: 'todo list',
     themeColor: '#fff8f2',
     msTileColor: '#fff8f2',
     appleMobileWebAppCapable: 'yes',

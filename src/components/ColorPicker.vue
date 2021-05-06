@@ -29,6 +29,7 @@
 
   .color-picker {
     display: flex;
+    max-width: 50%;
     &__item {
       width: 30px;
       height: 30px;
