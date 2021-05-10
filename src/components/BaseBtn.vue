@@ -36,7 +36,7 @@
     }
 
     &:hover {
-      @include from-br(sm) {
+      @include from-br(m) {
         border-color: var(--color-black);
         background-color: var(--color-black);
       }

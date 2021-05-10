@@ -31,6 +31,7 @@ export const store = new Vuex.Store({
     ADD_ITEM(state, payload) {
       const todo = {
         completed: false,
+        isEditing: false,
         shown: true,
         text: payload,
         id: state.id++,
@@ -42,7 +43,7 @@ export const store = new Vuex.Store({
       payload.item.text = payload.text
       localStorageService.updateLocalStorage(state.todoList)
     },
-    DELETE_ITEM(state, { index }) {
+    DELETE_ITEM(state, index) {
       state.todoList.splice(index, 1)
       localStorageService.updateLocalStorage(state.todoList)
     },

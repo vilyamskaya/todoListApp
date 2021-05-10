@@ -8,12 +8,12 @@
         <transition-group name="list" tag="ul" class="todos-list" appear>
           <li
             is="todo-item"
-            v-for="item in filteredTodos"
-            :index="todoList.indexOf(item)"
+            v-for="(item, i) in filteredTodos"
+            :index="i"
             :key="item.id"
-            :completed="item.completed"
-            :text="item.text"
-            :isEditing="item.isEditing"
+            :todo="item"
+            :other-editing="isEditing"
+            @is-editing="item.isEditing = $event"
             @on-complete="completeItem(item)"
             @on-edit="editItem({ item, text: $event })"
           />
@@ -37,6 +37,9 @@
     },
     computed: {
       ...mapGetters(['id', 'todoList', 'filteredTodos']),
+      isEditing() {
+        return this.filteredTodos.some((el) => !!el.isEditing)
+      },
     },
     components: {
       CreateItem,

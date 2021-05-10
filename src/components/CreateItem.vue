@@ -115,6 +115,7 @@
           width: 12px;
           height: 12px;
           position: absolute;
+          background-color: transparent;
           top: calc(50% - 6px);
           left: calc(50% - 6px);
           @include from-br(m) {

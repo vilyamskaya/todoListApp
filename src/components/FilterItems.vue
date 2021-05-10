@@ -19,35 +19,35 @@
         </base-btn>
         <div class="content" :class="{ hidden: hidden && isMobile }">
           <component
-            :is="isMobile ? 'a' : 'base-btn'"
-            href=""
+            :is="isMobile ? 'div' : 'base-btn'"
             :name="'active'"
             :selected="listName === 'Активные'"
             :class="{
               'm-btn': isMobile,
+              selected: listName === 'Активные',
             }"
             class="first-btn"
             @click="showActive"
             >Активные
           </component>
           <component
-            :is="isMobile ? 'a' : 'base-btn'"
-            href=""
+            :is="isMobile ? 'div' : 'base-btn'"
             :name="'done'"
             :selected="listName === 'Выполненные'"
             :class="{
               'm-btn': isMobile,
+              selected: listName === 'Выполненные',
             }"
             @click="showDone"
             >Выполненные
           </component>
           <component
-            :is="isMobile ? 'a' : 'base-btn'"
-            href=""
+            :is="isMobile ? 'div' : 'base-btn'"
             :name="'all'"
             :selected="listName === 'Все'"
             :class="{
               'm-btn': isMobile,
+              selected: listName === 'Все',
             }"
             @click="showAll"
             >Все
@@ -144,12 +144,23 @@
               font-size: $fs-20;
             }
 
+            &.selected {
+              background-color: transparent;
+              color: var(--color-accent);
+              border-bottom: 1px solid var(--color-accent);
+            }
+
             :active {
               color: var(--color-accent);
               border-bottom: 1px solid var(--color-accent);
             }
           }
         }
+      }
+
+      .selected {
+        background-color: var(--color-black);
+        border-color: var(--color-black);
       }
 
       .btn-filter {

@@ -1,7 +1,7 @@
 <template>
   <li class="list-item">
-    <div class="btns" v-if="!isEditing">
-      <base-btn :name="'delete'" @click="deleteItem(index, $event)">
+    <div class="btns" v-if="!todo.isEditing">
+      <base-btn :name="'delete'" @click="deleteItem(index)">
         <img src="../assets/img/garbage.svg" alt="delete item" />
       </base-btn>
       <base-btn :name="'edit'" @click="startEditing">
@@ -20,23 +20,23 @@
       class="btn-complete"
       type="button"
       name="check-complete"
-      @click="$emit('on-complete', $event)"
+      @click="completeItem($event)"
     >
       <img
         src="../assets/img/check-dark.svg"
-        :class="{ visible: completed }"
+        :class="{ visible: todo.completed }"
         alt="check item"
       />
     </button>
     <button
-      v-if="!isEditing"
+      v-if="!todo.isEditing"
       class="item-btn"
-      :class="{ completed }"
+      :class="{ completed: todo.completed }"
       type="button"
       name="item"
       @dblclick="startEditing"
     >
-      {{ text }}
+      {{ todo.text }}
     </button>
     <input
       v-else
@@ -61,17 +61,17 @@
       }
     },
     props: {
-      completed: {
-        type: Boolean,
-        default: false,
-      },
-      text: {
-        type: String,
-        default: '',
+      todo: {
+        type: Object,
+        default: null,
       },
       index: {
         type: Number,
         default: 0,
+      },
+      otherEditing: {
+        type: Boolean,
+        default: false,
       },
     },
     directives: {
@@ -83,18 +83,30 @@
     },
     methods: {
       startEditing() {
-        this.isEditing = true
-        this.newText = this.text
+        if (!this.otherEditing) {
+          this.isEditing = true
+          this.$emit('is-editing', true)
+          this.newText = this.todo.text
+        }
       },
       finishEditing() {
         this.isEditing = false
+        this.$emit('is-editing', false)
         this.$emit('on-edit', this.newText)
       },
       cancelEditing() {
         this.isEditing = false
+        this.$emit('is-editing', false)
       },
       deleteItem(index) {
-        this.$store.dispatch('deleteItem', index)
+        if (!this.otherEditing) {
+          this.$store.dispatch('deleteItem', index)
+        }
+      },
+      completeItem(ev) {
+        if (!this.otherEditing) {
+          this.$emit('on-complete', ev)
+        }
       },
     },
   }
@@ -181,6 +193,7 @@
         width: 12px;
         height: 12px;
         position: absolute;
+        background-color: transparent;
         top: calc(50% - 6px);
         left: calc(50% - 6px);
         @include from-br(m) {
