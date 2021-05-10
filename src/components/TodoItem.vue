@@ -118,7 +118,6 @@
 
   .list-item {
     display: flex;
-    justify-content: space-between;
     width: 100%;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;

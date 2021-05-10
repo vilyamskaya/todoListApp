@@ -4,6 +4,7 @@ module.exports = {
     name: 'todo list',
     themeColor: '#fff8f2',
     msTileColor: '#fff8f2',
+    appleMobileWebAppTitle: 'todo list',
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: '#fff8f2',
     manifestOptions: {
