@@ -1,77 +1,68 @@
 <template>
-  <div id="app" class="app" :class="color.title">
-    <color-picker
-      :colors="colors"
-      @click-color="$store.dispatch('setColor', $event)"
-      class="picker"
-    />
+  <div id="app" class="app" :class="theme.title">
+    <color-picker :themes="themes" @change-theme="setTheme" class="app__colorPicker" />
     <todo-list />
   </div>
 </template>
-<script>
-  import TodoList from './components/TodoList.vue'
-  import ColorPicker from './components/ColorPicker'
-  import './assets/scss/global.scss'
-  import { mapGetters } from 'vuex'
 
-  export default {
-    components: {
-      TodoList,
-      ColorPicker,
+<script lang="ts">
+  import TodoList from '@/components/TodoList.vue'
+  import ColorPicker from '@/components/ColorPicker.vue'
+
+  import { appThemes } from '@/libs/appThemes'
+
+  import store from '@/store'
+
+  import { computed, defineComponent } from 'vue'
+
+  export default defineComponent({
+    name: 'App',
+    components: { TodoList, ColorPicker },
+    setup() {
+      const themes: TAppThemes = [...appThemes]
+      const theme = computed(() => store.getters.theme)
+
+      const setTheme = (theme: TAppTheme) => store.dispatch('setTheme', theme)
+
+      store.dispatch('getTheme')
+      store.dispatch('setAllTodos')
+      store.dispatch('setId')
+
+      return { themes, theme, setTheme }
     },
-    data() {
-      return {
-        colors: [
-          {
-            title: 'orange',
-            color: '#f49737',
-          },
-          {
-            title: 'blue',
-            color: '#afdce2',
-          },
-        ],
-      }
-    },
-    computed: {
-      ...mapGetters(['color']),
-    },
-    created() {
-      this.$store.dispatch('getColor')
-    },
-  }
+  })
 </script>
 
 <style scoped lang="scss">
-  @import './assets/scss/vars';
-  @import './assets/scss/mixins';
-
   .app {
     position: relative;
     min-height: 100vh;
-    background: var(--color-bg);
-    color: var(--color-black);
-    .picker {
-      position: relative;
+    background: var(--bg);
+    color: var(--color-text);
+    transition: all 1s;
+    &__colorPicker {
+      position: absolute;
       top: $p-10;
-      left: $p-10;
-      @include from-br(m) {
-        position: absolute;
-      }
+      right: $p-10;
     }
   }
-  .orange {
-    --color-accent: #f49737;
-    --color-bg: #fff8f2;
-    --color-black: #2e2e34;
-    --color-box: #f8dfc7;
+
+  .light {
+    --color-accent: #fc6d00;
+    --color-bg: #e1e1e1;
     --color-white: #ffffff;
+    --color-text: #2e2e34;
+    --bg: linear-gradient(-45deg, var(--color-bg) 80%, var(--color-white));
+    --color-hover: rgba(195, 195, 195, 0.2);
+    --shadow: 5px 5px 8px rgba(195, 195, 195, 0.5), -5px -5px 8px rgba(255, 255, 255, 0.8);
   }
-  .blue {
-    --color-accent: #afdce2;
-    --color-bg: #fff8f2;
-    --color-black: #333333;
-    --color-box: #eeebe6;
+
+  .dark {
+    --color-accent: #ff00a6;
+    --color-bg: #26262d;
     --color-white: #ffffff;
+    --color-text: #eeebe6;
+    --bg: linear-gradient(-45deg, var(--color-bg) 80%, #35353a);
+    --shadow: 5px 5px 8px rgba(20, 20, 20, 0.7), -5px -5px 8px rgba(80, 80, 80, 0.5);
   }
 </style>

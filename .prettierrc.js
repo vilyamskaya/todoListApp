@@ -3,4 +3,5 @@ module.exports = {
   vueIndentScriptAndStyle: true,
   semi: false,
   trailingComma: 'es5',
+  printWidth: 120,
 }

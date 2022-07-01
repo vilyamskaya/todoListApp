@@ -1,185 +1,122 @@
 <template>
   <div class="filter">
-    <h2 class="filter-title">{{ listName + ' задачи' }}</h2>
-    <div class="filter-btns">
-      <div
-        :class="{
-          'm-filter': isMobile,
-          'desk-filter': !isMobile,
-        }"
-        @mouseleave="hideList"
-      >
+    <h2 class="filter__title">{{ listName + ' задачи' }}</h2>
+    <div class="filter__btns">
+      <div class="filter__container">
         <base-btn
-          v-if="isMobile"
-          :name="'filters'"
-          class="btn-filter"
-          @click="hidden = !hidden"
+          v-for="(value, type) in listNames"
+          :key="type"
+          name="active"
+          :class="{ selected: listName === value }"
+          class="filter__btn"
+          @click="filterTodos(type)"
         >
-          Фильтры
+          {{ value }}
         </base-btn>
-        <div class="content" :class="{ hidden: hidden && isMobile }">
-          <component
-            :is="isMobile ? 'div' : 'base-btn'"
-            :name="'active'"
-            :selected="listName === 'Активные'"
-            :class="{
-              'm-btn': isMobile,
-              selected: listName === 'Активные',
-            }"
-            class="first-btn"
-            @click="showActive"
-            >Активные
-          </component>
-          <component
-            :is="isMobile ? 'div' : 'base-btn'"
-            :name="'done'"
-            :selected="listName === 'Выполненные'"
-            :class="{
-              'm-btn': isMobile,
-              selected: listName === 'Выполненные',
-            }"
-            @click="showDone"
-            >Выполненные
-          </component>
-          <component
-            :is="isMobile ? 'div' : 'base-btn'"
-            :name="'all'"
-            :selected="listName === 'Все'"
-            :class="{
-              'm-btn': isMobile,
-              selected: listName === 'Все',
-            }"
-            @click="showAll"
-            >Все
-          </component>
-        </div>
       </div>
-      <base-btn :name="'delete-all'" class="delete-all" @click="deleteAll">
-        Очистить список
-      </base-btn>
+      <base-btn name="delete_all" class="filter__btn filter__btnDelete" @click="deleteAll">Очистить</base-btn>
     </div>
   </div>
 </template>
 
-<script>
-  import { mapActions, mapGetters } from 'vuex'
-  import BaseBtn from './BaseBtn'
+<script lang="ts">
+  import BaseBtn from '@/components/BaseBtn.vue'
+  import { ListNames } from '@/enams/listNames'
+  import store from '@/store'
 
-  export default {
-    components: {
-      BaseBtn,
-    },
-    data() {
+  import { computed, defineComponent } from 'vue'
+
+  export default defineComponent({
+    components: { BaseBtn },
+    setup() {
+      const listName = computed(() => store.getters.listName)
+      const listNames: Record<string, ListNames> = {}
+      Object.entries(ListNames).forEach((el) => (listNames[el[0]] = el[1]))
+
+      const filterTodos = (type: string): void => {
+        let newType = type
+
+        if (window.innerWidth < 768) {
+          const listNamesKeys = Object.keys(listNames)
+          const index = listNamesKeys.indexOf(newType)
+          newType = listNamesKeys[index === listNamesKeys.length - 1 ? 0 : index + 1]
+        }
+
+        store.dispatch(`show${newType[0].toUpperCase()}${newType.slice(1)}`)
+      }
+      const deleteAll = (): void => {
+        store.dispatch('deleteAll')
+      }
+
       return {
-        hidden: true,
+        listName,
+        listNames,
+        filterTodos,
+        deleteAll,
       }
     },
-    computed: {
-      ...mapGetters(['todoList', 'listName']),
-      isMobile() {
-        return this.isPhone || this.isTablet
-      },
-    },
-    methods: {
-      ...mapActions(['showActive', 'showDone', 'showAll', 'deleteAll']),
-      hideList() {
-        if (this.isMobile) this.hidden = true
-      },
-    },
-  }
+  })
 </script>
 
 <style lang="scss" scoped>
-  @import '../assets/scss/vars';
-  @import '../assets/scss/mixins';
-
   .filter {
-    position: sticky;
-    top: 0;
     display: flex;
+    position: sticky;
+    z-index: $z-plus;
+    top: 0;
     flex-direction: column;
     justify-content: space-between;
-    background-color: var(--color-bg);
-    z-index: $z-plus;
+    margin: 0 -$p-10;
+    padding: $p-10;
+    background-color: transparent;
+    backdrop-filter: blur(5px);
 
-    &-title {
-      margin: $p-20;
-      text-align: center;
+    &__container {
+      display: flex;
+      flex-direction: column;
+      @include from-br(sm) {
+        flex-direction: row;
+      }
     }
 
-    &-btns {
+    &__title {
+      margin: $p-20 0;
+    }
+
+    &__btns {
       display: flex;
       justify-content: space-between;
+      align-items: flex-end;
+    }
 
-      .m-filter {
-        position: relative;
-        margin: $p-5;
+    &__btn {
+      display: none;
+      width: auto;
+      padding: 0 $p-20;
+      border: none;
+      @include from-br(sm) {
+        display: block;
+      }
+
+      & + & {
         margin-left: 0;
-
-        .content {
-          display: block;
-          background-color: var(--color-black);
-          margin: 0;
-          padding: $p-10 0;
-          position: absolute;
-          z-index: $z-plus;
-          top: 100%;
-          left: 0;
-          width: 150px;
-          text-align: center;
-          box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-
-          &.hidden {
-            display: none;
-          }
-
-          .m-btn {
-            display: block;
-            color: var(--color-bg);
-            padding: $p-10;
-            margin: 0;
-            border-bottom: 1px solid transparent;
-            transition: all 0.5s;
-            @include from-br(m) {
-              font-size: $fs-20;
-            }
-
-            &.selected {
-              background-color: transparent;
-              color: var(--color-accent);
-              border-bottom: 1px solid var(--color-accent);
-            }
-
-            :active {
-              color: var(--color-accent);
-              border-bottom: 1px solid var(--color-accent);
-            }
-          }
+        @include from-br(sm) {
+          margin-top: 0;
+          margin-left: $p-10;
         }
       }
 
-      .selected {
-        background-color: var(--color-black);
-        border-color: var(--color-black);
-      }
-
-      .btn-filter {
-        border: none;
-        margin: 0;
-      }
-
-      .first-btn {
-        margin-left: 0;
-      }
-
-      .delete-all {
-        margin-right: 0;
+      &.selected {
+        display: block;
+        color: var(--color-white);
+        border-color: var(--color-accent);
+        background-color: var(--color-accent);
       }
     }
 
-    button {
-      width: auto;
-      padding: 0 $p-10;
+    &__btnDelete {
+      display: block;
+      margin-right: 0;
     }
   }
 </style>

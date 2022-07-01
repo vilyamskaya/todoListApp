@@ -1,60 +1,70 @@
 <template>
-  <button type="button" :name="name" class="btn" @click="$emit('click')">
+  <button type="button" class="btn">
+    <inline-svg v-if="icon" :src="require(`@/assets/img/${icon}.svg`)" class="btn__icon" />
     <slot />
   </button>
 </template>
 
-<script>
-  export default {
+<script lang="ts">
+  import { defineComponent } from 'vue'
+
+  export default defineComponent({
+    name: 'BaseBtn',
     props: {
-      name: {
+      icon: {
         type: String,
-        default: '',
-      },
-      selected: {
-        type: Boolean,
-        default: false,
       },
     },
-  }
+  })
 </script>
 
 <style lang="scss" scoped>
-  @import '../assets/scss/vars';
-  @import '../assets/scss/mixins';
-
   .btn {
-    border: 5px solid var(--color-accent);
-    background: var(--color-accent);
-    height: 45px;
-    color: var(--color-white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    height: 40px;
+    border-radius: 20px;
     transition: all 0.5s;
-    margin: $p-5;
-    @include from-br(m) {
-      height: 60px;
-      margin: $p-10;
+    background: transparent;
+    color: var(--color-accent);
+    box-shadow: var(--shadow);
+
+    & + & {
+      margin-left: $p-5;
+      @include from-br(m) {
+        margin-left: $p-10;
+      }
     }
 
     &:hover {
       @include from-br(m) {
-        border-color: var(--color-black);
-        background-color: var(--color-black);
+        border-color: var(--color-hover);
+        background-color: var(--color-hover);
       }
     }
 
-    .selected {
-      border-color: var(--color-black);
-      background-color: var(--color-black);
-    }
-
-    :active {
+    &:active {
       color: transparent;
-      background-color: var(--color-black);
-      border-color: var(--color-black);
+      border-color: var(--color-accent);
+      background-color: var(--color-accent);
     }
 
-    :focus {
+    &:focus {
       outline: none;
+    }
+
+    &__icon {
+      width: 16px;
+      height: 16px;
+      color: var(--color-accent);
+      @include from-br(m) {
+        width: 16px;
+        height: 16px;
+      }
     }
   }
 </style>

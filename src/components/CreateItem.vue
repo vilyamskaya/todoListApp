@@ -1,130 +1,75 @@
 <template>
-  <div class="app-header">
-    <p class="text-md">Напиши список дел, чтобы не забыть их выполнить</p>
-    <div class="create-form">
-      <base-btn class="btn" :name="'add'" @click="addNewItem">
-        <img src="../assets/img/check-white.svg" alt="add item" />
-      </base-btn>
-      <div class="wide">
-        <input
-          aria-label="Write a to-do"
-          class="create-form-input"
-          type="text"
-          v-model="todoText"
-          @keyup.enter.prevent="addNewItem"
-          v-focus
-        />
-      </div>
+  <div class="header">
+    <p class="header__text text-md">Напиши список дел, чтобы не забыть их выполнить</p>
+    <div class="header__form">
+      <base-input
+        v-model="todoText"
+        aria-label="Write a to-do"
+        class="header__input"
+        placeholder="Важное дело"
+        @keyup.enter.prevent="addNewItem"
+      />
+      <base-btn icon="check" class="header__addBtn" name="add" @click="addNewItem" />
     </div>
   </div>
 </template>
 
-<script>
-  import BaseBtn from './BaseBtn'
+<script lang="ts">
+  import BaseBtn from '@/components/BaseBtn.vue'
+  import BaseInput from '@/components/BaseInput.vue'
 
-  export default {
-    components: { BaseBtn },
-    data() {
-      return {
-        todoText: '',
-      }
-    },
-    directives: {
-      focus: {
-        inserted: function (el) {
-          el.focus()
-        },
-      },
-    },
-    methods: {
-      addNewItem() {
-        if (this.todoText.length > 0) {
-          this.$store.dispatch('addItem', this.todoText)
+  import { focus } from '@/libs/focusDirective'
+  import store from '@/store'
+
+  import { defineComponent, ref } from 'vue'
+
+  export default defineComponent({
+    components: { BaseInput, BaseBtn },
+    directives: { focus },
+    setup() {
+      const todoText = ref('')
+      const addNewItem = () => {
+        if (todoText.value?.length > 0) {
+          store.dispatch('addItem', todoText.value)
         }
-        this.todoText = ''
-      },
+        todoText.value = ''
+      }
+
+      return { todoText, addNewItem }
     },
-  }
+  })
 </script>
 
 <style lang="scss" scoped>
-  @import '../assets/scss/vars';
-  @import '../assets/scss/mixins';
-
-  .app-header {
+  .header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: var(--color-black);
+    color: var(--color-text);
 
-    p {
+    &__text {
       text-align: center;
-      margin: $p-20 0;
+      margin: 0 $p-20 $p-20;
+      @include from-br(sm) {
+        margin: $p-20 0;
+      }
     }
 
-    .create-form {
+    &__form {
+      display: flex;
+      justify-content: space-between;
       width: 100%;
-      margin-bottom: $p-20 * 2;
+      max-width: 700px;
+      margin-bottom: $p-20;
       @include from-br(m) {
-        width: 70%;
         margin-bottom: $p-40 * 2;
       }
+    }
 
-      .wide {
-        overflow: hidden;
-        margin-left: $p-5;
-      }
-
-      &-input {
-        width: 98%;
-        display: block;
-        height: 45px;
-        border: 3px solid var(--color-box);
-        border-radius: 0;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        padding: 0 $p-10;
-        transition: all 0.5s;
-        margin: $p-5;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        @include from-br(m) {
-          height: 60px;
-          border-width: 5px;
-          margin: $p-10;
-        }
-
-        &:focus {
-          border-color: var(--color-accent);
-          outline: none;
-        }
-      }
-
-      .btn {
-        float: right;
-        display: block;
-        width: 45px;
-        position: relative;
-        @include from-br(m) {
-          width: 60px;
-        }
-
-        img {
-          width: 12px;
-          height: 12px;
-          position: absolute;
-          background-color: transparent;
-          top: calc(50% - 6px);
-          left: calc(50% - 6px);
-          @include from-br(m) {
-            width: 16px;
-            height: 16px;
-            top: calc(50% - 8px);
-            left: calc(50% - 8px);
-          }
-        }
+    &__input {
+      margin-right: $p-10;
+      @include from-br(m) {
+        margin-right: $p-20;
       }
     }
   }

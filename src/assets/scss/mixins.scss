@@ -1,11 +1,9 @@
 @mixin from-br($bp) {
   $brkpnts: (
-          xs: 320px,
-          sm: 768px,
-          m: 1024px,
-          md: 1140px,
-          lg: 1280px,
-          xl: 1400px,
+    xs: 320px,
+    sm: 768px,
+    m: 1024px,
+    md: 1140px,
   );
 
   @if map-has-key($brkpnts, $bp) {

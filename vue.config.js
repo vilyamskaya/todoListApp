@@ -13,4 +13,14 @@ module.exports = {
     },
     workboxPluginMode: 'GenerateSW',
   },
+  css: {
+    loaderOptions: {
+      sass: {
+        additionalData: `
+          @import '@/assets/scss/vars';
+          @import '@/assets/scss/mixins';
+        `,
+      },
+    },
+  },
 }

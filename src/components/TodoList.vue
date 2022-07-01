@@ -1,129 +1,81 @@
 <template>
-  <div class="container todos">
-    <h1 class="todos-title">Твой список задач</h1>
+  <div class="todos">
+    <h1 class="todos__title">Твой список задач</h1>
     <create-item />
+    <transition name="slide-fade">
+      <filter-items v-if="todoList.length" />
+    </transition>
     <transition name="slide-fade" appear>
-      <div v-if="todoList.length">
-        <filter-items />
-        <transition-group name="list" tag="ul" class="todos-list" appear>
-          <li
-            is="todo-item"
-            v-for="(item, i) in filteredTodos"
-            :index="i"
-            :key="item.id"
-            :todo="item"
-            :other-editing="isEditing"
-            @is-editing="item.isEditing = $event"
-            @on-complete="completeItem(item)"
-            @on-edit="editItem({ item, text: $event })"
-          />
+      <div v-if="filteredTodos.length" class="todos__wrapper">
+        <transition-group name="list" tag="ul" class="todos__list" appear>
+          <todo-item v-for="(item, i) in filteredTodos" :index="i" :key="item.id" :todo="item" />
         </transition-group>
       </div>
-      <p class="empty text-md" v-else>Список задач пуст</p>
+      <p class="todos__empty text-md" v-else>Список задач пуст</p>
     </transition>
   </div>
 </template>
 
-<script>
-  import CreateItem from './CreateItem.vue'
-  import TodoItem from './TodoItem.vue'
-  import FilterItems from './FilterItems'
-  import { mapGetters, mapActions } from 'vuex'
+<script lang="ts">
+  import CreateItem from '@/components/CreateItem.vue'
+  import TodoItem from '@/components/TodoItem.vue'
+  import FilterItems from '@/components/FilterItems.vue'
 
-  export default {
-    mounted() {
-      this.setAllTodos()
-      this.setId()
-    },
-    computed: {
-      ...mapGetters(['id', 'todoList', 'filteredTodos']),
-      isEditing() {
-        return this.filteredTodos.some((el) => !!el.isEditing)
-      },
-    },
+  import store from '@/store'
+
+  import { computed, defineComponent } from 'vue'
+
+  export default defineComponent({
     components: {
       CreateItem,
       TodoItem,
       FilterItems,
     },
-    methods: {
-      ...mapActions(['setAllTodos', 'setId', 'editItem', 'completeItem']),
+    setup() {
+      const id = computed(() => store.getters.id)
+      const todoList = computed(() => store.getters.todoList)
+      const filteredTodos = computed(() => store.getters.filteredTodos)
+
+      return { id, todoList, filteredTodos }
     },
-  }
+  })
 </script>
 
 <style lang="scss" scoped>
-  @import '../assets/scss/vars';
-  @import '../assets/scss/mixins';
-
   .todos {
-    &-title {
+    display: flex;
+    flex-direction: column;
+    padding: 0 $p-20;
+    @include from-br(m) {
+      width: 80%;
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    &__title {
       margin: $p-20 0;
       text-align: center;
     }
 
-    &-list {
+    &__list {
       padding: 0;
-      margin-top: $p-5;
+      margin: $p-20 0 $p-40;
       position: relative;
+      @include from-br(m) {
+        margin: $p-20 0 $p-60;
+      }
+    }
+
+    &__empty {
+      position: absolute;
+      width: 50%;
+      bottom: 15%;
+      left: 25%;
+      border-top: 1px solid var(--color-text);
+      padding-top: $p-40;
+      margin-top: $p-60;
+      text-align: center;
     }
   }
-
-  .empty {
-    position: absolute;
-    width: 50%;
-    top: 60%;
-    left: 25%;
-    border-top: 1px solid var(--color-black);
-    padding-top: $p-40;
-    margin-top: $p-60;
-    text-align: center;
-  }
-
-  /*----АНИМАЦИЯ ПОЯВЛЕНИЯ И УДАЛЕНИЯ СПИСКА----*/
-
-  .slide-fade-enter {
-    opacity: 0;
-    transform: translateY($p-20 * 10);
-  }
-
-  .slide-fade-leave-to {
-    opacity: 0;
-  }
-
-  .slide-fade-enter-active,
-  .slide-fade-leave-active {
-    transition: all 1s;
-  }
-
-  .slide-fade-move {
-    transition: all 1s;
-  }
-
-  /*----АНИМАЦИЯ ПОЯВЛЕНИЯ И УДАЛЕНИЯ ЭЛЕМЕНТОВ СПИСКА----*/
-
-  .list-enter {
-    opacity: 0;
-    transform: translateY($p-20 * 10);
-  }
-
-  .list-leave-to {
-    opacity: 0;
-    transform: translateX(-$p-40 * 10);
-  }
-
-  .list-enter-active,
-  .list-leave-active {
-    transition: all 1s;
-  }
-
-  .list-leave-active {
-    position: absolute;
-  }
-
-  .list-move {
-    transition: all 1s;
-  }
-
-  /*----КОНЕЦ СТИЛЕЙ АНИМАЦИИ----*/
 </style>

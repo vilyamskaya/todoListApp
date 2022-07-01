@@ -1,9 +1,7 @@
 @import '~reset-css';
-@import 'src/assets/scss/vars';
-@import 'src/assets/scss/mixins';
-@import 'src/assets/scss/typography';
-@import 'fonts.css';
-@import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+@import '@/assets/scss/typography';
+@import '@/assets/scss/fonts';
+@import '@/assets/scss/transitions';
 
 * {
   margin: 0;
@@ -15,24 +13,15 @@ body {
   overflow-y: scroll;
 }
 
+button, input {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+}
+
 button {
   cursor: pointer;
-  outline: none;
-}
-
-input {
-  outline: none;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  width: 90%;
-  @include from-br(m) {
-    width: 80%;
-    max-width: 1210px;
-  }
 }
 
 a {

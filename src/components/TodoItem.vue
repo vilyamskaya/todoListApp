@@ -1,217 +1,191 @@
 <template>
-  <li class="list-item">
-    <div class="btns" v-if="!todo.isEditing">
-      <base-btn :name="'delete'" @click="deleteItem(index)">
-        <img src="../assets/img/garbage.svg" alt="delete item" />
-      </base-btn>
-      <base-btn :name="'edit'" @click="startEditing">
-        <img src="../assets/img/pencil.svg" alt="edit item" />
-      </base-btn>
-    </div>
-    <div class="btns" v-else>
-      <base-btn :name="'finish-editing'" @click="finishEditing">
-        <img src="../assets/img/check-white.svg" alt="save item" />
-      </base-btn>
-      <base-btn :name="'cancel-editing'" @click="cancelEditing">
-        <img src="../assets/img/remove.svg" alt="close item" />
-      </base-btn>
-    </div>
-    <button
-      class="btn-complete"
-      type="button"
-      name="check-complete"
-      @click="completeItem($event)"
-    >
-      <img
-        src="../assets/img/check-dark.svg"
-        :class="{ visible: todo.completed }"
-        alt="check item"
-      />
-    </button>
-    <button
-      v-if="!todo.isEditing"
-      class="item-btn"
-      :class="{ completed: todo.completed }"
-      type="button"
-      name="item"
-      @dblclick="startEditing"
-    >
-      {{ todo.text }}
-    </button>
-    <input
-      v-else
-      aria-label="Edit to-do"
-      type="text"
-      v-model="newText"
-      @keyup.enter.prevent="finishEditing"
-      v-focus
-    />
+  <li class="listItem">
+    <SwipeActions isClosedOnClick>
+      <div class="listItem__container">
+        <button
+          v-if="!isEditing"
+          class="listItem__btnComplete"
+          type="button"
+          name="check-complete"
+          @click="completeItem"
+        >
+          <inline-svg v-show="todo.completed" :src="require('@/assets/img/check.svg')" class="listItem__icon" />
+        </button>
+        <div class="listItem__labelContainer">
+          <div
+            v-if="!isEditing"
+            class="listItem__label"
+            :class="{ completed: todo.completed }"
+            @dblclick="startEditing"
+          >
+            {{ todo.text }}
+          </div>
+          <base-input v-else v-model="model" aria-label="Edit to-do" class="listItem__input" />
+        </div>
+        <div class="listItem__btns">
+          <template v-if="!isEditing">
+            <base-btn icon="pencil" name="edit" class="listItem__btn listItem__btn--desk" @click="startEditing" />
+            <base-btn icon="garbage" name="delete" class="listItem__btn listItem__btn--desk" @click="deleteItem" />
+          </template>
+          <template v-else>
+            <base-btn icon="check" name="finish-editing" @click="finishEditing" />
+            <base-btn icon="close" name="cancel-editing" @click="endEditing" />
+          </template>
+        </div>
+      </div>
+      <template #right>
+        <div class="listItem__btns listItem__btns--actions">
+          <base-btn icon="pencil" name="edit" class="listItem__btn" @click="startEditing" />
+          <base-btn icon="garbage" name="delete" class="listItem__btn" @click="deleteItem" />
+        </div>
+      </template>
+    </SwipeActions>
   </li>
 </template>
 
-<script>
-  import BaseBtn from './BaseBtn'
+<script lang="ts">
+  import BaseBtn from '@/components/BaseBtn.vue'
+  import BaseInput from '@/components/BaseInput.vue'
+  import SwipeActions from '@/components/SwipeActions.vue'
 
-  export default {
-    components: { BaseBtn },
-    data() {
+  import store from '@/store'
+
+  import { computed, defineComponent, ref } from 'vue'
+
+  export default defineComponent({
+    components: { BaseInput, BaseBtn, SwipeActions },
+    props: {
+      todo: Object as () => TTodoItem,
+      index: Number,
+    },
+    setup(props) {
+      const isEditing = ref(false)
+      const startEditing = () => (isEditing.value = true)
+
+      const newText = ref(props.todo?.text ?? '')
+      const model = computed({
+        get(): string {
+          return props.todo?.text ?? ''
+        },
+        set(value: string) {
+          newText.value = value
+        },
+      })
+
+      const endEditing = () => (isEditing.value = false)
+      const finishEditing = () => {
+        if (newText.value.length) {
+          const newItem = { ...props.todo, text: newText.value }
+          endEditing()
+          store.dispatch('editItem', newItem)
+        }
+      }
+      const deleteItem = () => store.dispatch('deleteItem', props.index)
+      const completeItem = () => {
+        const newItem = { ...props.todo, completed: !props.todo?.completed }
+        store.dispatch('editItem', newItem)
+      }
+
       return {
-        isEditing: false,
-        newText: '',
+        isEditing,
+        model,
+        newText,
+        startEditing,
+        finishEditing,
+        endEditing,
+        deleteItem,
+        completeItem,
       }
     },
-    props: {
-      todo: {
-        type: Object,
-        default: null,
-      },
-      index: {
-        type: Number,
-        default: 0,
-      },
-      otherEditing: {
-        type: Boolean,
-        default: false,
-      },
-    },
-    directives: {
-      focus: {
-        inserted: function (el) {
-          el.focus()
-        },
-      },
-    },
-    methods: {
-      startEditing() {
-        if (!this.otherEditing) {
-          this.isEditing = true
-          this.$emit('is-editing', true)
-          this.newText = this.todo.text
-        }
-      },
-      finishEditing() {
-        this.isEditing = false
-        this.$emit('is-editing', false)
-        this.$emit('on-edit', this.newText)
-      },
-      cancelEditing() {
-        this.isEditing = false
-        this.$emit('is-editing', false)
-      },
-      deleteItem(index) {
-        if (!this.otherEditing) {
-          this.$store.dispatch('deleteItem', index)
-        }
-      },
-      completeItem(ev) {
-        if (!this.otherEditing) {
-          this.$emit('on-complete', ev)
-        }
-      },
-    },
-  }
+  })
 </script>
 
 <style lang="scss" scoped>
-  @import '../assets/scss/vars';
-  @import '../assets/scss/mixins';
-
-  .list-item {
-    display: flex;
-    width: 100%;
+  .listItem {
+    border-radius: 20px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    margin-bottom: $p-20;
-    border: 1px solid var(--color-box);
-    background: var(--color-box);
-    @include from-br(m) {
-      border: 5px solid var(--color-box);
-    }
+    box-shadow: var(--shadow);
+    background-color: transparent;
 
-    .btns {
-      display: flex;
-    }
-
-    .btn-complete {
-      border: 3px solid var(--color-accent);
-      background: var(--color-white);
-      height: 45px;
-      min-width: 45px;
-      width: 45px;
-      transition: all 0.5s;
-      margin: $p-5;
-      position: relative;
+    & + & {
+      margin-top: $p-10;
       @include from-br(m) {
-        border-width: 5px;
-        height: 60px;
-        min-width: 60px;
-        width: 60px;
-        margin: $p-10;
+        margin-top: $p-20;
       }
+    }
+
+    &__container {
+      display: flex;
+      padding: $p-10;
+      @include from-br(m) {
+        padding: $p-20;
+      }
+    }
+
+    &__btns {
+      display: flex;
+
+      &--actions {
+        margin: 0 $p-10;
+      }
+    }
+
+    &__btn {
+      &--desk {
+        display: none;
+        @include from-br(sm) {
+          display: block;
+        }
+      }
+    }
+
+    &__btnComplete {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      min-width: 40px;
+      height: 40px;
+      min-height: 40px;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      background-color: transparent;
+      transition: all 0.5s;
 
       &:hover {
         @include from-br(sm) {
-          border-color: var(--color-black);
+          background-color: var(--color-hover);
         }
       }
 
       &:focus {
         outline: none;
       }
-
-      img {
-        visibility: hidden;
-        width: 12px;
-        height: 12px;
-        position: absolute;
-        top: calc(50% - 6px);
-        left: calc(50% - 6px);
-        @include from-br(m) {
-          width: 16px;
-          height: 16px;
-          top: calc(50% - 8px);
-          left: calc(50% - 8px);
-        }
-      }
-
-      .visible {
-        visibility: visible;
-      }
     }
 
-    .btn {
-      margin-right: 0;
-      width: 45px;
-      position: relative;
+    &__icon {
+      width: 16px;
+      height: 16px;
+      color: var(--color-accent);
+    }
+
+    &__labelContainer {
+      flex-grow: 1;
+      margin-right: $p-5;
       @include from-br(m) {
-        width: 60px;
-      }
-
-      img {
-        width: 12px;
-        height: 12px;
-        position: absolute;
-        background-color: transparent;
-        top: calc(50% - 6px);
-        left: calc(50% - 6px);
-        @include from-br(m) {
-          width: 16px;
-          height: 16px;
-          top: calc(50% - 8px);
-          left: calc(50% - 8px);
-        }
+        margin-right: $p-10;
       }
     }
 
-    .item-btn {
-      width: 80%;
-      text-align: left;
-      border: none;
-      background: none;
+    &__label {
+      color: var(--color-text);
       padding-left: $p-5;
+      line-height: 20px;
       @include from-br(m) {
         padding-left: $p-20 + 5px;
+        line-height: 40px;
       }
 
       &:focus {
@@ -224,32 +198,8 @@
       }
     }
 
-    input {
-      width: 80%;
-      display: block;
-      height: 45px;
-      border: 3px solid var(--color-black);
-      border-radius: 0;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      padding: 0 $p-10;
-      transition: all 0.5s;
-      margin: $p-5 $p-5 $p-5 0;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      @include from-br(m) {
-        border-width: 5px;
-        height: 60px;
-        padding: 0 $p-20;
-        margin: $p-10 $p-10 $p-10 0;
-      }
-
-      :focus {
-        border-color: var(--color-accent);
-        outline: none;
-      }
+    &__input {
+      width: 100%;
     }
   }
 </style>

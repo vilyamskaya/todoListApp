@@ -1,17 +1,13 @@
-@import 'src/assets/scss/vars';
-@import 'src/assets/scss/mixins';
-
-$fs-base: 16px;
-$font-family-title: 'Amatic SC', museosans, helvetica, arial, sans-serif;
-$font-family: 'Montserrat', museosans, helvetica, arial, sans-serif;
-
 html {
   -webkit-font-smoothing: antialiased;
 
-  font-size: $fs-base;
+  font-size: $fs-base-m;
   font-family: $font-family;
   font-weight: 500;
   letter-spacing: 0;
+  @include from-br(m) {
+    font-size: $fs-base-desk;
+  }
 
   input,
   textarea,
@@ -19,7 +15,10 @@ html {
   button {
     font-family: $font-family;
     font-weight: 400;
-    font-size: $fs-base;
+    font-size: $fs-base-m;
+    @include from-br(m) {
+      font-size: $fs-base-desk;
+    }
   }
 
   h1 {
@@ -33,24 +32,24 @@ html {
 
 h1, .h1 {
   line-height: 1;
-  font-size: $fs-60;
+  font-size: $fs-title-m;
   font-weight: 400;
   @include from-br(m) {
-    font-size: $fs-100;
+    font-size: $fs-title-l;
   }
 }
 
 h2 {
   line-height: 1;
   font-weight: 400;
-  font-size: $fs-40;
+  font-size: $fs-title-s;
   @include from-br(m) {
-    font-size: $fs-60;
+    font-size: $fs-title-m;
   }
 }
 
 .text-md {
-  font-size: $fs-base;
+  font-size: $fs-base-m;
   font-weight: 400;
   line-height: 1.2;
   @include from-br(md) {
