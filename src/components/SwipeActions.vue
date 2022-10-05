@@ -93,6 +93,9 @@
         if (window.innerWidth <= this.breakpoint) {
           if (this.isActive) {
             const shift = -this.coord + (this.coord = event.touches[0].clientX)
+            if (Math.abs(shift) < 10) {
+              return
+            }
             this.dir = shift >= 0 ? 'left' : 'right'
           }
         }

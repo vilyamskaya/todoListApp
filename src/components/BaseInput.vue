@@ -44,6 +44,7 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    color: var(--color-text);
     box-shadow: var(--shadow);
     -webkit-appearance: none;
     -moz-appearance: none;

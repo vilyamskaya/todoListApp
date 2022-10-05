@@ -21,7 +21,7 @@
 
 <script lang="ts">
   import BaseBtn from '@/components/BaseBtn.vue'
-  import { ListNames } from '@/enams/listNames'
+  import { ListNames } from '@/enums/listNames'
   import store from '@/store'
 
   import { computed, defineComponent } from 'vue'

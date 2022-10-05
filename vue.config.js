@@ -1,15 +1,15 @@
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? '/todoListApp/' : '/',
   pwa: {
-    name: 'todo list',
-    themeColor: '#fff8f2',
-    msTileColor: '#fff8f2',
-    appleMobileWebAppTitle: 'todo list',
+    name: 'to do',
+    themeColor: '#26262d',
+    msTileColor: '#26262d',
+    appleMobileWebAppTitle: 'to do',
     appleMobileWebAppCapable: 'yes',
-    appleMobileWebAppStatusBarStyle: '#fff8f2',
+    appleMobileWebAppStatusBarStyle: '#26262d',
     manifestOptions: {
       display: 'standalone',
-      background_color: '#fff8f2',
+      background_color: '#26262d',
     },
     workboxPluginMode: 'GenerateSW',
   },

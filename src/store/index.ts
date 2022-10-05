@@ -1,6 +1,6 @@
 import { appThemes } from '@/libs/appThemes'
 import { localStorageService } from './localStorageService'
-import { ListNames } from '@/enams/listNames'
+import { ListNames } from '@/enums/listNames'
 
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
