@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="app" :class="theme.title">
-    <color-picker :themes="themes" @change-theme="setTheme" class="app__colorPicker" />
-    <todo-list />
+    <color-picker :themes="themes" @change-theme="setTheme" class="app__colorPicker" data-test-id="color_picker" />
+    <todo-list data-test-id="todo_list" />
   </div>
 </template>
 
@@ -11,15 +11,15 @@
 
   import { appThemes } from '@/libs/appThemes'
 
-  import store from '@/store'
-
+  import { useStore } from '@/store'
   import { computed, defineComponent } from 'vue'
 
   export default defineComponent({
     name: 'App',
     components: { TodoList, ColorPicker },
     setup() {
-      const themes: TAppThemes = [...appThemes]
+      const store = useStore()
+      const themes: TAppThemes = Array.prototype.slice.call(appThemes)
       const theme = computed(() => store.getters.theme)
 
       const setTheme = (theme: TAppTheme) => store.dispatch('setTheme', theme)

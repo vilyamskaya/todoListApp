@@ -1,5 +1,5 @@
 <template>
-  <button type="button" class="btn">
+  <button type="button" class="btn" data-test-id="base_btn">
     <inline-svg v-if="icon" :src="require(`@/assets/img/${icon}.svg`)" class="btn__icon" />
     <slot />
   </button>

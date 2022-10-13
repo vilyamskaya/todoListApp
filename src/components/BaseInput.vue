@@ -1,5 +1,5 @@
 <template>
-  <input v-model="model" type="text" v-focus class="input" />
+  <input v-model="model" type="text" v-focus class="input" data-test-id="base_input" />
 </template>
 
 <script lang="ts">

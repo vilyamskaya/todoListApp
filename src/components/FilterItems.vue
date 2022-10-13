@@ -1,20 +1,27 @@
 <template>
   <div class="filter">
-    <h2 class="filter__title">{{ listName + ' задачи' }}</h2>
+    <h2 class="filter__title" data-test-id="filter_items_header">{{ listName + ' задачи' }}</h2>
     <div class="filter__btns">
       <div class="filter__container">
         <base-btn
           v-for="(value, type) in listNames"
           :key="type"
-          name="active"
+          :name="type"
           :class="{ selected: listName === value }"
           class="filter__btn"
           @click="filterTodos(type)"
+          data-test-id="filter_items_list"
         >
           {{ value }}
         </base-btn>
       </div>
-      <base-btn name="delete_all" class="filter__btn filter__btnDelete" @click="deleteAll">Очистить</base-btn>
+      <base-btn
+        name="delete_all"
+        class="filter__btn filter__btnDelete"
+        data-test-id="filter_items_delete"
+        @click="deleteAll"
+        >Очистить</base-btn
+      >
     </div>
   </div>
 </template>
@@ -22,13 +29,14 @@
 <script lang="ts">
   import BaseBtn from '@/components/BaseBtn.vue'
   import { ListNames } from '@/enums/listNames'
-  import store from '@/store'
+  import { useStore } from '@/store'
 
   import { computed, defineComponent } from 'vue'
 
   export default defineComponent({
     components: { BaseBtn },
     setup() {
+      const store = useStore()
       const listName = computed(() => store.getters.listName)
       const listNames: Record<string, ListNames> = {}
       Object.entries(ListNames).forEach((el) => (listNames[el[0]] = el[1]))
@@ -42,7 +50,7 @@
           newType = listNamesKeys[index === listNamesKeys.length - 1 ? 0 : index + 1]
         }
 
-        store.dispatch(`show${newType[0].toUpperCase()}${newType.slice(1)}`)
+        store.dispatch(`showFiltered`, newType)
       }
       const deleteAll = (): void => {
         store.dispatch('deleteAll')

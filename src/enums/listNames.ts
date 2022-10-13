@@ -1,5 +1,5 @@
 export enum ListNames {
-  active = 'Активные',
-  completed = 'Выполненные',
-  all = 'Все',
+  Active = 'Активные',
+  Completed = 'Выполненные',
+  All = 'Все',
 }

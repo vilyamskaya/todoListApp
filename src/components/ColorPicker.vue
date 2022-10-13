@@ -6,6 +6,7 @@
       class="colorPicker__item"
       :style="`background-color: ${theme.color}`"
       @click="changeTheme(theme)"
+      data-test-id="color_theme"
     ></div>
   </div>
 </template>

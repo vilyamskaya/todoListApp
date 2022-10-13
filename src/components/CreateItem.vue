@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <p class="header__text text-md">Напиши список дел, чтобы не забыть их выполнить</p>
+    <p class="header__text text-md" data-test-id="add_item_header">Напиши список дел, чтобы не забыть их выполнить</p>
     <div class="header__form">
       <base-input
         v-model="todoText"
@@ -9,7 +9,7 @@
         placeholder="Важное дело"
         @keyup.enter.prevent="addNewItem"
       />
-      <base-btn icon="check" class="header__addBtn" name="add" @click="addNewItem" />
+      <base-btn icon="check" class="header__addBtn" name="add" data-test-id="add_item_btn" @click="addNewItem" />
     </div>
   </div>
 </template>
@@ -19,7 +19,7 @@
   import BaseInput from '@/components/BaseInput.vue'
 
   import { focus } from '@/libs/focusDirective'
-  import store from '@/store'
+  import { useStore } from '@/store'
 
   import { defineComponent, ref } from 'vue'
 
@@ -27,6 +27,7 @@
     components: { BaseInput, BaseBtn },
     directives: { focus },
     setup() {
+      const store = useStore()
       const todoText = ref('')
       const addNewItem = () => {
         if (todoText.value?.length > 0) {

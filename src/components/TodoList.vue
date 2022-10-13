@@ -1,17 +1,17 @@
 <template>
   <div class="todos">
-    <h1 class="todos__title">Твой список задач</h1>
-    <create-item />
+    <h1 class="todos__title" data-test-id="todo_title">Твой список задач</h1>
+    <create-item data-test-id="create_todo" />
     <transition name="slide-fade">
-      <filter-items v-if="todoList.length" />
+      <filter-items v-if="todoList.length" data-test-id="filter_todos" />
     </transition>
     <transition name="slide-fade" appear>
-      <div v-if="filteredTodos.length" class="todos__wrapper">
+      <div v-if="filteredTodos.length" class="todos__wrapper" data-test-id="todo_list">
         <transition-group name="list" tag="ul" class="todos__list" appear>
           <todo-item v-for="(item, i) in filteredTodos" :index="i" :key="item.id" :todo="item" />
         </transition-group>
       </div>
-      <p class="todos__empty text-md" v-else>Список задач пуст</p>
+      <p class="todos__empty text-md" data-test-id="todo_empty" v-else>Список задач пуст</p>
     </transition>
   </div>
 </template>
@@ -21,8 +21,7 @@
   import TodoItem from '@/components/TodoItem.vue'
   import FilterItems from '@/components/FilterItems.vue'
 
-  import store from '@/store'
-
+  import { useStore } from '@/store'
   import { computed, defineComponent } from 'vue'
 
   export default defineComponent({
@@ -32,6 +31,7 @@
       FilterItems,
     },
     setup() {
+      const store = useStore()
       const id = computed(() => store.getters.id)
       const todoList = computed(() => store.getters.todoList)
       const filteredTodos = computed(() => store.getters.filteredTodos)

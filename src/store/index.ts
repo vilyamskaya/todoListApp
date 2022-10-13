@@ -2,14 +2,24 @@ import { appThemes } from '@/libs/appThemes'
 import { localStorageService } from './localStorageService'
 import { ListNames } from '@/enums/listNames'
 
-import { createStore } from 'vuex'
+import { InjectionKey } from 'vue'
+import { createStore, useStore as baseUseStore, Store } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 
-export default createStore({
+export interface State {
+  todoList: TTodoList
+  id: number
+  listName: ListNames
+  theme: TAppTheme
+}
+
+export const key: InjectionKey<Store<State>> = Symbol()
+
+export const store = createStore<State>({
   state: {
     todoList: [] as TTodoList,
     id: 0,
-    listName: ListNames.all,
+    listName: ListNames.All,
     theme: appThemes[0],
   },
   mutations: {
@@ -32,13 +42,13 @@ export default createStore({
       localStorageService.updateLocalStorage(state.todoList)
     },
     SHOW_ACTIVE(state) {
-      state.listName = ListNames.active
+      state.listName = ListNames.Active
     },
     SHOW_COMPLETED(state) {
-      state.listName = ListNames.completed
+      state.listName = ListNames.Completed
     },
     SHOW_ALL(state) {
-      state.listName = ListNames.all
+      state.listName = ListNames.All
     },
     DELETE_ALL(state) {
       state.todoList = []
@@ -70,14 +80,8 @@ export default createStore({
     deleteItem({ commit }, payload: number) {
       commit('DELETE_ITEM', payload)
     },
-    showActive({ commit }) {
-      commit('SHOW_ACTIVE')
-    },
-    showCompleted({ commit }) {
-      commit('SHOW_COMPLETED')
-    },
-    showAll({ commit }) {
-      commit('SHOW_ALL')
+    showFiltered({ commit }, payload: string) {
+      commit(`SHOW_${payload.toUpperCase()}`)
     },
     deleteAll({ commit }) {
       commit('DELETE_ALL')
@@ -98,9 +102,9 @@ export default createStore({
   getters: {
     filteredTodos(state): TTodoList {
       switch (state.listName) {
-        case ListNames.active:
+        case ListNames.Active:
           return state.todoList.filter((item: TTodoItem) => !item.completed)
-        case ListNames.completed:
+        case ListNames.Completed:
           return state.todoList.filter((item: TTodoItem) => item.completed)
         default:
           return state.todoList
@@ -122,3 +126,7 @@ export default createStore({
   strict: true,
   plugins: [createPersistedState()],
 })
+
+export function useStore() {
+  return baseUseStore(key)
+}

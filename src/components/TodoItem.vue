@@ -2,34 +2,52 @@
   <li class="listItem">
     <SwipeActions isClosedOnClick>
       <div class="listItem__container">
-        <button
+        <base-btn
           v-if="!isEditing"
-          class="listItem__btnComplete"
-          type="button"
+          :icon="todo.completed ? 'check' : ''"
           name="check-complete"
+          class="listItem__btnComplete"
+          data-test-id="todo_item_check"
           @click="completeItem"
-        >
-          <inline-svg v-show="todo.completed" :src="require('@/assets/img/check.svg')" class="listItem__icon" />
-        </button>
+        />
         <div class="listItem__labelContainer">
           <div
             v-if="!isEditing"
             class="listItem__label"
             :class="{ completed: todo.completed }"
+            data-test-id="todo_item_text"
             @dblclick="startEditing"
           >
             {{ todo.text }}
           </div>
-          <base-input v-else v-model="model" aria-label="Edit to-do" class="listItem__input" />
+          <base-input
+            v-else
+            v-model="model"
+            aria-label="Edit to-do"
+            class="listItem__input"
+            data-test-id="todo_item_input"
+          />
         </div>
         <div class="listItem__btns">
           <template v-if="!isEditing">
-            <base-btn icon="pencil" name="edit" class="listItem__btn listItem__btn--desk" @click="startEditing" />
-            <base-btn icon="garbage" name="delete" class="listItem__btn listItem__btn--desk" @click="deleteItem" />
+            <base-btn
+              icon="pencil"
+              name="edit"
+              class="listItem__btn listItem__btn--desk"
+              data-test-id="todo_item_edit"
+              @click="startEditing"
+            />
+            <base-btn
+              icon="garbage"
+              name="delete"
+              class="listItem__btn listItem__btn--desk"
+              data-test-id="todo_item_delete"
+              @click="deleteItem"
+            />
           </template>
           <template v-else>
-            <base-btn icon="check" name="finish-editing" @click="finishEditing" />
-            <base-btn icon="close" name="cancel-editing" @click="endEditing" />
+            <base-btn icon="check" name="finish-editing" data-test-id="todo_item_save" @click="finishEditing" />
+            <base-btn icon="close" name="cancel-editing" data-test-id="todo_item_cancel" @click="endEditing" />
           </template>
         </div>
       </div>
@@ -48,8 +66,7 @@
   import BaseInput from '@/components/BaseInput.vue'
   import SwipeActions from '@/components/SwipeActions.vue'
 
-  import store from '@/store'
-
+  import { useStore } from '@/store'
   import { computed, defineComponent, ref } from 'vue'
 
   export default defineComponent({
@@ -59,6 +76,7 @@
       index: Number,
     },
     setup(props) {
+      const store = useStore()
       const isEditing = ref(false)
       const startEditing = () => (isEditing.value = true)
 
